@@ -1,7 +1,6 @@
-SeaBottle - Thông Điệp Trong Chai
-
-Khởi động FE : 
+Change .env.example to .env 
 npm start
+
 
 
 
