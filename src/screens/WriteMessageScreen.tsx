@@ -84,13 +84,13 @@ const styles = StyleSheet.create({
   textInput: {
     backgroundColor: 'transparent',
     width: scale(700),
-    height: verticalScale(800),
+    height: verticalScale(900),
     textAlignVertical: 'top',
     padding: verticalScale(10),
     color: '#3E2723',
     fontSize: moderateScale(32),
     lineHeight: moderateScale(48),
-    marginTop: verticalScale(-350), // Pull it up even further
+    marginTop: verticalScale(-450), // Pull it up further to accommodate increased height
   },
   buttonContainer: {
     flexDirection: "row",
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '90%',
     position: 'absolute',
-    bottom: verticalScale(50),
+    bottom: verticalScale(10), // Push it further down
   },
   sendButton: {
     backgroundColor: "#004D40",
