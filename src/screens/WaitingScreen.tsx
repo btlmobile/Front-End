@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback } from "react";
 import {
   View,
   Text,
@@ -7,18 +7,26 @@ import {
   StatusBar,
 } from "react-native";
 import { scale, verticalScale, moderateScale } from "../utils/scaling";
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from "../navigation/types";
+import { useFocusEffect } from '@react-navigation/native';
 
 const bgImage = require("../../asset/image/waiting_bg.png");
 const waittingImageLayer = require("../../asset/image/found_bottle_bg.png");
 
-export default function WaitingScreen({ navigation }: any) {
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      navigation.navigate("FoundBottle");
-    }, 3000); // Navigate after 3 seconds
+type Props = NativeStackScreenProps<RootStackParamList, 'Waiting'>;
 
-    return () => clearTimeout(timer);
-  }, [navigation]);
+export default function WaitingScreen({ navigation }: Props) {
+
+  useFocusEffect(
+    useCallback(() => {
+      const timer = setTimeout(() => {
+        navigation.navigate("FoundBottle");
+      }, 3000); // Navigate after 3 seconds
+
+      return () => clearTimeout(timer);
+    }, [navigation])
+  );
 
   return (
     <View style={styles.container}>

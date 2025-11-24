@@ -6,8 +6,9 @@ import FoundBottleScreen from './src/screens/FoundBottleScreen';
 import WaitingScreen from './src/screens/WaitingScreen';
 import WriteMessageScreen from './src/screens/WriteMessageScreen';
 import ReadMessageScreen from './src/screens/ReadMessageScreen';
+import { RootStackParamList } from './src/navigation/types';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   return (

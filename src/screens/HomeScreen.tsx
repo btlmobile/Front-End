@@ -9,13 +9,17 @@ import {
   Image,
 } from "react-native";
 import { scale, verticalScale, moderateScale } from "../utils/scaling";
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from "../navigation/types";
 
 const bgImage = require("../../asset/image/home_bg.png");
 const image2 = require("../../asset/image/image2.png");
 const image4 = require("../../asset/image/image4.png");
 const image5 = require("../../asset/image/image5.png");
 
-export default function HomeScreen({ navigation }: any) {
+type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
+
+export default function HomeScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />

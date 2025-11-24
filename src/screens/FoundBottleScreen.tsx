@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
     width: scale(393),
     height: verticalScale(262),
     marginBottom: verticalScale(40),
+    borderRadius: scale(20),
   },
   messageText: {
     color: "#FFFFFF",
