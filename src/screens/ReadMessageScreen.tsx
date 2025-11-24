@@ -77,9 +77,9 @@ const styles = StyleSheet.create({
   messageContainer: {
     backgroundColor: 'transparent',
     width: scale(700),
-    height: verticalScale(900),
+    height: verticalScale(800),
     padding: verticalScale(10),
-    marginTop: verticalScale(-450), // Pull it up further to accommodate increased height
+    marginTop: verticalScale(-400), // Adjust marginTop as requested
   },
   messageText: {
     color: '#3E2723',
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '90%',
     position: 'absolute',
-    bottom: verticalScale(10), // Push it further down
+    bottom: verticalScale(5), // Push it further down
   },
   keepButton: {
     backgroundColor: "rgba(85, 107, 47, 0.8)",
