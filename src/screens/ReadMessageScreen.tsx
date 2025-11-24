@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     width: scale(700),
     height: verticalScale(800),
     padding: verticalScale(10),
-    marginTop: verticalScale(-100), // Pull it up
+    marginTop: verticalScale(-350), // Pull it up even further
   },
   messageText: {
     color: '#3E2723',

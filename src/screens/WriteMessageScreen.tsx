@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     color: '#3E2723',
     fontSize: moderateScale(32),
     lineHeight: moderateScale(48),
-    marginTop: verticalScale(-100), // Pull it up
+    marginTop: verticalScale(-350), // Pull it up even further
   },
   buttonContainer: {
     flexDirection: "row",
