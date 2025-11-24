@@ -1,0 +1,116 @@
+import React from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ImageBackground,
+  TouchableOpacity,
+  StatusBar,
+  Image,
+} from "react-native";
+import { scale, verticalScale, moderateScale } from "../utils/scaling";
+
+const bgImage = require("../../asset/image/found_bottle_bg.png");
+const bottleImage = require("../../asset/image/bottle-6016e4.png");
+
+export default function FoundBottleScreen({ navigation }: any) {
+  return (
+    <View style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
+      <ImageBackground
+        source={bgImage}
+        style={styles.background}
+        resizeMode="cover"
+      >
+        <View style={styles.overlay}>
+          <View style={styles.messageBox}>
+            <Image source={bottleImage} style={styles.bottleImage} />
+            <Text style={styles.messageText}>
+              Tôi tình cờ tìm thấy một chiếc chai trôi dạt vào bờ. Tôi tự hỏi nó
+              chứa đựng những bí mật gì...
+            </Text>
+          </View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.returnButton}
+              onPress={() => navigation.navigate("Home")}
+            >
+              <Text style={styles.buttonText}>Trở về</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.openButton}
+              onPress={() => navigation.navigate("ReadMessage")}
+            >
+              <Text style={styles.buttonText}>Mở chai</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ImageBackground>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  background: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
+  overlay: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: scale(24),
+  },
+  messageBox: {
+    backgroundColor: "rgba(100, 149, 237, 0.5)",
+    borderRadius: scale(60),
+    paddingVertical: verticalScale(30),
+    paddingHorizontal: scale(30),
+    alignItems: "center",
+    width: '90%',
+    borderColor: '#FFFFFF',
+    borderWidth: 1,
+  },
+  bottleImage: {
+    width: scale(393),
+    height: verticalScale(262),
+    marginBottom: verticalScale(40),
+  },
+  messageText: {
+    color: "#FFFFFF",
+    fontSize: moderateScale(32),
+    textAlign: "center",
+    marginBottom: verticalScale(40),
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: '80%',
+    marginTop: verticalScale(30),
+  },
+  returnButton: {
+    backgroundColor: "rgba(47, 79, 79, 0.7)",
+    paddingVertical: verticalScale(14),
+    paddingHorizontal: scale(30),
+    borderRadius: scale(25),
+    borderColor: '#FFFFFF',
+    borderWidth: 1,
+  },
+  openButton: {
+    backgroundColor: "rgba(65, 105, 225, 0.8)",
+    paddingVertical: verticalScale(14),
+    paddingHorizontal: scale(30),
+    borderRadius: scale(25),
+    borderColor: '#FFFFFF',
+    borderWidth: 1,
+  },
+  buttonText: {
+    color: "#FFFFFF",
+    fontSize: moderateScale(32),
+    fontWeight: "bold",
+  },
+});

@@ -6,14 +6,14 @@ import {
   ImageBackground,
   TouchableOpacity,
   StatusBar,
-  Platform,
   Image,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { scale, verticalScale, moderateScale } from "../utils/scaling";
 
-const bgImage = require("../../asset/image/homepage.jpg");
-const icon1 = require("../../asset/icon/icon1.jpg");
-const icon2 = require("../../asset/icon/icon2.jpg");
+const bgImage = require("../../asset/image/home_bg.png");
+const image2 = require("../../asset/image/image2.png");
+const image4 = require("../../asset/image/image4.png");
+const image5 = require("../../asset/image/image5.png");
 
 export default function HomeScreen({ navigation }: any) {
   return (
@@ -24,56 +24,34 @@ export default function HomeScreen({ navigation }: any) {
         style={styles.background}
         resizeMode="cover"
       >
-        <View style={styles.topBar}>
-          <View style={styles.leftIcons}>
-            <TouchableOpacity
-              style={styles.iconButton}
-              onPress={() => navigation?.navigate ? navigation.navigate("Icon2Screen") : console.log("Icon 2")}
-            >
-              <Image source={icon2} style={styles.iconImage} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.iconButton}
-              onPress={() => navigation?.navigate ? navigation.navigate("Icon1Screen") : console.log("Icon 1")}
-            >
-              <Image source={icon1} style={styles.iconImage} />
-            </TouchableOpacity>
+        <View style={styles.overlay}>
+          <Image source={image2} style={styles.image2} />
+          <Image source={image4} style={styles.image4} />
+          <Image source={image5} style={styles.image5} />
+          
+          <View style={styles.contentContainer}>
+            <Text style={styles.title}>Thông Điệp Trong Chai</Text>
+            
+            <View style={styles.centerContent}>
+              <Text style={styles.subtitle}>
+                Viết ra lời tâm sự, thả theo sóng biển
+              </Text>
+
+              <TouchableOpacity
+                style={styles.primaryButton}
+                onPress={() => navigation.navigate("WriteMessage")}
+              >
+                <Text style={styles.buttonText}>Viết thư</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.secondaryButton}
+                onPress={() => navigation.navigate("Waiting")}
+              >
+                <Text style={styles.buttonText}>Dạo biển</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          <TouchableOpacity
-            style={styles.iconButton}
-            onPress={() => navigation?.navigate ? navigation.navigate("Settings") : console.log("Settings")}
-          >
-            <Ionicons name="settings-outline" size={28} color="#fff" />
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.centerContent}>
-          <Text style={styles.title}>Thông Điệp Trong Chai</Text>
-          <Text style={styles.subtitle}>
-            Viết ra cảm xúc của bạn, thả theo sóng biển
-          </Text>
-
-          <TouchableOpacity
-            style={styles.primaryButton}
-            onPress={() =>
-              navigation?.navigate
-                ? navigation.navigate("WriteLetter")
-                : console.log("Viết thư")
-            }
-          >
-            <Text style={styles.buttonText}>Viết thư</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.secondaryButton}
-            onPress={() =>
-              navigation?.navigate
-                ? navigation.navigate("WalkBeach")
-                : console.log("Dạo biển")
-            }
-          >
-            <Text style={styles.buttonText}>Dạo biển</Text>
-          </TouchableOpacity>
         </View>
       </ImageBackground>
     </View>
@@ -89,65 +67,83 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  topBar: {
-    marginTop: Platform.OS === 'android' ? StatusBar.currentHeight || 40 : 40,
-    paddingHorizontal: 16,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  leftIcons: {
-    flexDirection: "column",
-    gap: 8,
-    alignItems: "flex-start",
-  },
-  iconButton: {
-    width: 36,
-    height: 36,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  iconImage: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    borderWidth: 2,
-    borderColor: "rgba(255,255,255,0.5)",
-  },
-  centerContent: {
+  overlay: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: 24,
+  },
+  contentContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
+  image2: {
+    position: 'absolute',
+    top: verticalScale(109),
+    left: scale(55),
+    width: scale(81),
+    height: verticalScale(92),
+  },
+  image4: {
+    position: 'absolute',
+    top: verticalScale(108),
+    right: scale(67),
+    width: scale(73),
+    height: verticalScale(93),
+  },
+  image5: {
+    position: 'absolute',
+    top: verticalScale(260),
+    right: scale(67),
+    width: scale(73),
+    height: verticalScale(75),
   },
   title: {
-    fontSize: 20,
-    fontWeight: "600",
-    color: "#fff",
-    marginBottom: 8,
+    fontSize: moderateScale(60),
+    fontWeight: "bold",
+    color: "#FFFFFF",
+    textAlign: "center",
+    textShadowColor: 'rgba(0, 0, 0, 0.7)',
+    textShadowOffset: { width: 0, height: 4 },
+    textShadowRadius: 6,
+    marginTop: verticalScale(200),
+  },
+  centerContent: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: verticalScale(150)
   },
   subtitle: {
-    fontSize: 12,
-    color: "rgba(255,255,255,0.9)",
+    fontSize: moderateScale(35),
+    fontWeight: "bold",
+    color: "#FFFFFF",
     textAlign: "center",
-    marginBottom: 28,
+    marginBottom: verticalScale(100),
+    textShadowColor: 'rgba(0, 0, 0, 0.7)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
   },
   primaryButton: {
-    backgroundColor: "#4C3FF2",
-    paddingVertical: 10,
-    paddingHorizontal: 40,
-    borderRadius: 999,
-    marginBottom: 16,
+    backgroundColor: "rgba(65, 105, 225, 0.7)",
+    paddingVertical: verticalScale(24),
+    paddingHorizontal: scale(55),
+    borderRadius: scale(45),
+    marginBottom: verticalScale(60),
+    borderColor: 'rgba(255, 255, 255, 0.5)',
+    borderWidth: 1
   },
   secondaryButton: {
-    backgroundColor: "#6A4DFD",
-    paddingVertical: 10,
-    paddingHorizontal: 40,
-    borderRadius: 999,
+    backgroundColor: "rgba(30, 144, 255, 0.6)",
+    paddingVertical: verticalScale(24),
+    paddingHorizontal: scale(80),
+    borderRadius: scale(45),
+    borderColor: 'rgba(255, 255, 255, 0.5)',
+    borderWidth: 1
   },
   buttonText: {
-    color: "#fff",
-    fontWeight: "600",
-    fontSize: 16,
+    color: "#FFFFFF",
+    fontWeight: "bold",
+    fontSize: moderateScale(50),
   },
 });
