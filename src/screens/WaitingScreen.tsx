@@ -6,17 +6,15 @@ import {
   ImageBackground,
   StatusBar,
 } from "react-native";
-import { scale, verticalScale, moderateScale } from "../utils/scaling";
+import { verticalScale, moderateScale } from "../utils/scaling";
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from "../navigation/types";
 import { useFocusEffect } from '@react-navigation/native';
+import { commonStyles } from "../styles/common";
 
-const bgImage = require("../../asset/image/waiting_bg.png");
 const waittingImageLayer = require("../../asset/image/found_bottle_bg.png");
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Waiting'>;
-
-export default function WaitingScreen({ navigation }: Props) {
+export default function WaitingScreen({ navigation }: NativeStackScreenProps<RootStackParamList, 'Waiting'>) {
 
   useFocusEffect(
     useCallback(() => {
@@ -32,19 +30,13 @@ export default function WaitingScreen({ navigation }: Props) {
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
       <ImageBackground
-        source={bgImage}
+        source={waittingImageLayer}
         style={styles.background}
         resizeMode="cover"
       >
-        <ImageBackground
-          source={waittingImageLayer}
-          style={styles.background}
-          resizeMode="cover"
-        >
-          <View style={styles.overlay}>
-            <Text style={styles.title}>Đi dạo quanh bãi biển</Text>
-          </View>
-        </ImageBackground>
+        <View style={styles.overlay}>
+          <Text style={styles.title}>Đi dạo quanh bãi biển</Text>
+        </View>
       </ImageBackground>
     </View>
   );
@@ -52,12 +44,10 @@ export default function WaitingScreen({ navigation }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    ...commonStyles.container,
   },
   background: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
+    ...commonStyles.background,
   },
   overlay: {
     flex: 1,
@@ -67,7 +57,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: moderateScale(60),
     fontWeight: "bold",
-    color: "#FAFAD2",
+    color: "#F0F4F8",
     textAlign: "center",
     textShadowColor: 'rgba(0, 0, 0, 0.7)',
     textShadowOffset: { width: 0, height: 4 },

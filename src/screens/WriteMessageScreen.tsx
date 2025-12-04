@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import {
-  View,
-  Text,
   StyleSheet,
-  ImageBackground,
   TouchableOpacity,
-  StatusBar,
   TextInput,
   Alert,
+  Text,
 } from "react-native";
 import { scale, verticalScale, moderateScale } from "../utils/scaling";
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from "../navigation/types";
+import MessageLayout, { messageLayoutStyles } from "../components/MessageLayout";
 
-const bgImage = require("../../asset/image/write_message_bg.png");
+type Props = NativeStackScreenProps<RootStackParamList, 'WriteMessage'>;
 
-export default function WriteMessageScreen({ navigation }: any) {
+export default function WriteMessageScreen({ navigation }: Props) {
   const [message, setMessage] = useState("");
 
   const handleSend = () => {
@@ -23,64 +23,35 @@ export default function WriteMessageScreen({ navigation }: any) {
     ]);
   };
 
-  return (
-    <View style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
-      <ImageBackground
-        source={bgImage}
-        style={styles.background}
-        resizeMode="cover"
+  const buttons = (
+    <>
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.navigate("Home")}
       >
-        <View style={styles.overlay}>
-          <Text style={styles.title}>Hãy gửi thông điệp của bạn</Text>
-          <TextInput
-            style={styles.textInput}
-            multiline
-            placeholder="Viết điều bạn muốn nói..."
-            placeholderTextColor="#777"
-            onChangeText={setMessage}
-            value={message}
-          />
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.backButton}
-              onPress={() => navigation.navigate("Home")}
-            >
-              <Text style={styles.buttonText}>Quay lại</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
-              <Text style={styles.sendButtonText}>Gửi</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </ImageBackground>
-    </View>
+        <Text style={messageLayoutStyles.buttonText}>Quay lại</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
+        <Text style={messageLayoutStyles.buttonText}>Gửi</Text>
+      </TouchableOpacity>
+    </>
+  );
+
+  return (
+    <MessageLayout title="Hãy gửi thông điệp của bạn" buttons={buttons}>
+      <TextInput
+        style={styles.textInput}
+        multiline
+        placeholder="Viết điều bạn muốn nói..."
+        placeholderTextColor="#777"
+        onChangeText={setMessage}
+        value={message}
+      />
+    </MessageLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  background: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
-  },
-  overlay: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: scale(24),
-  },
-  title: {
-    fontSize: moderateScale(50),
-    fontWeight: "bold",
-    color: "#5D4037",
-    textAlign: "center",
-    position: 'absolute',
-    top: verticalScale(100),
-  },
   textInput: {
     backgroundColor: 'transparent',
     width: scale(700),
@@ -92,34 +63,16 @@ const styles = StyleSheet.create({
     lineHeight: moderateScale(48),
     marginTop: 0,
   },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: 'center',
-    width: '90%',
-    position: 'absolute',
-    bottom: verticalScale(50),
-  },
   sendButton: {
-    backgroundColor: "#004D40",
+    backgroundColor: "#0077B6",
     borderRadius: scale(30),
     paddingVertical: verticalScale(20),
     paddingHorizontal: scale(80),
   },
   backButton: {
-    backgroundColor: "rgba(121, 85, 72, 0.7)",
+    backgroundColor: "#486273",
     borderRadius: scale(30),
     paddingVertical: verticalScale(20),
     paddingHorizontal: scale(60),
-  },
-  sendButtonText: {
-    color: "#FFFFFF",
-    fontSize: moderateScale(40),
-    fontWeight: "bold",
-  },
-  buttonText: {
-    color: "#FFFFFF",
-    fontSize: moderateScale(40),
-    fontWeight: "bold",
   },
 });

@@ -9,11 +9,16 @@ import {
   Image,
 } from "react-native";
 import { scale, verticalScale, moderateScale } from "../utils/scaling";
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from "../navigation/types";
+import { commonStyles } from "../styles/common";
 
 const bgImage = require("../../asset/image/found_bottle_bg.png");
 const bottleImage = require("../../asset/image/bottle-6016e4.png");
 
-export default function FoundBottleScreen({ navigation }: any) {
+type Props = NativeStackScreenProps<RootStackParamList, 'FoundBottle'>;
+
+export default function FoundBottleScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
@@ -52,12 +57,10 @@ export default function FoundBottleScreen({ navigation }: any) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    ...commonStyles.container,
   },
   background: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
+    ...commonStyles.background,
   },
   overlay: {
     flex: 1,
@@ -66,7 +69,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: scale(24),
   },
   messageBox: {
-    backgroundColor: "rgba(100, 149, 237, 0.5)",
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
     borderRadius: scale(60),
     paddingVertical: verticalScale(30),
     paddingHorizontal: scale(30),
@@ -82,7 +85,7 @@ const styles = StyleSheet.create({
     borderRadius: scale(20),
   },
   messageText: {
-    color: "#FFFFFF",
+    color: "#F0F4F8",
     fontSize: moderateScale(32),
     textAlign: "center",
     marginBottom: verticalScale(40),
@@ -94,7 +97,7 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(30),
   },
   returnButton: {
-    backgroundColor: "rgba(47, 79, 79, 0.7)",
+    backgroundColor: "#486273",
     paddingVertical: verticalScale(14),
     paddingHorizontal: scale(30),
     borderRadius: scale(25),
@@ -102,7 +105,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   openButton: {
-    backgroundColor: "rgba(65, 105, 225, 0.8)",
+    backgroundColor: "#0077B6",
     paddingVertical: verticalScale(14),
     paddingHorizontal: scale(30),
     borderRadius: scale(25),

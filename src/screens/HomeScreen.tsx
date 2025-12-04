@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { scale, verticalScale, moderateScale } from "../utils/scaling";
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { commonStyles } from "../styles/common";
 import { RootStackParamList } from "../navigation/types";
 
 const bgImage = require("../../asset/image/home_bg.png");
@@ -64,12 +65,10 @@ export default function HomeScreen({ navigation }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    ...commonStyles.container,
   },
   background: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
+    ...commonStyles.background,
   },
   overlay: {
     flex: 1,
@@ -106,7 +105,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: moderateScale(60),
     fontWeight: "bold",
-    color: "#FFFFFF",
+    color: "#F0F4F8",
     textAlign: "center",
     textShadowColor: 'rgba(0, 0, 0, 0.7)',
     textShadowOffset: { width: 0, height: 4 },
@@ -121,7 +120,7 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: moderateScale(35),
     fontWeight: "bold",
-    color: "#FFFFFF",
+    color: "#F0F4F8",
     textAlign: "center",
     marginBottom: verticalScale(100),
     textShadowColor: 'rgba(0, 0, 0, 0.7)',
@@ -129,7 +128,7 @@ const styles = StyleSheet.create({
     textShadowRadius: 4,
   },
   primaryButton: {
-    backgroundColor: "rgba(65, 105, 225, 0.7)",
+    backgroundColor: "#0077B6",
     paddingVertical: verticalScale(24),
     paddingHorizontal: scale(55),
     borderRadius: scale(45),
@@ -138,7 +137,7 @@ const styles = StyleSheet.create({
     borderWidth: 1
   },
   secondaryButton: {
-    backgroundColor: "rgba(30, 144, 255, 0.6)",
+    backgroundColor: "#486273",
     paddingVertical: verticalScale(24),
     paddingHorizontal: scale(80),
     borderRadius: scale(45),
