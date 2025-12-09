@@ -33,14 +33,16 @@ jobs:
         run: |
           if [ -f coverage/lcov.info ]; then
             echo "✅ Coverage file found"
+            ls -lh coverage/lcov.info
+            echo "First 10 lines:"
             head -10 coverage/lcov.info
           else
             echo "❌ Coverage file NOT found"
             exit 1
           fi
 
-      - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@master
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v3.1.0
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: https://sonarcloud.io
