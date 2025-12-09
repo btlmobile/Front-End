@@ -22,7 +22,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 export default function HomeScreen({ navigation }: Props) {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="home-screen-container">
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
       <ImageBackground
         source={bgImage}
