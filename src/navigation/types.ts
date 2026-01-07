@@ -1,15 +1,15 @@
 export type RootStackParamList = {
   Home: undefined;
-  Waiting: { theme: 'day' | 'night' };
-  FoundBottle: { theme: 'day' | 'night' };
-  ReadMessage: { theme: 'day' | 'night' };
-  WriteMessage: { theme: 'day' | 'night' };
-  LoadingSend: { theme: 'day' | 'night' };
+  Waiting: { theme: 'light' | 'dark' };
+  FoundBottle: { theme: 'light' | 'dark' };
+  ReadMessage: { theme: 'light' | 'dark' };
+  WriteMessage: { theme: 'light' | 'dark' };
+  LoadingSend: { theme: 'light' | 'dark' };
   Login: undefined;
   Register: undefined;
-  Introduce: { theme: 'day' | 'night' };
-  Support: { theme: 'day' | 'night' };
-  Account: { theme: 'day' | 'night' };
-  Balo: { theme: 'day' | 'night' };
+  Introduce: { theme: 'light' | 'dark' };
+  Support: { theme: 'light' | 'dark' };
+  Account: { theme: 'light' | 'dark' };
+  Balo: { theme: 'light' | 'dark' };
   Test: undefined;
 };

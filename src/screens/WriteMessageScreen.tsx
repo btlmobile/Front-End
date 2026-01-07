@@ -1,47 +1,50 @@
-import React, { useState } from "react";
-import {
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-  Alert,
-  Text,
-} from "react-native";
-import { scale, verticalScale, moderateScale } from "../utils/scaling";
+import React, { useState } from 'react';
+import { TextInput } from 'react-native';
+import { Button as PaperButton } from 'react-native-paper';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from "../navigation/types";
-import MessageLayout, { messageLayoutStyles } from "../components/MessageLayout";
+import { RootStackParamList } from '../navigation/types';
+import MessageLayout from '../components/MessageLayout';
+import { styles } from './styles/WriteMessageScreen.style';
+import { theme as appTheme } from '../themes/theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'WriteMessage'>;
 
 export default function WriteMessageScreen({ route, navigation }: Props) {
-  const [message, setMessage] = useState("");
-  const theme = route.params?.theme || 'day';
+  const [message, setMessage] = useState('');
+  const currentTheme = route.params?.theme || 'light';
 
   const handleSend = () => {
-    console.log("Message sent:", message);
-    navigation.navigate("LoadingSend", { theme: theme });
+    console.log('Message sent:', message);
+    navigation.navigate('LoadingSend', { theme: currentTheme });
   };
 
   const buttons = (
     <>
-      <TouchableOpacity
+      <PaperButton
+        mode="contained"
+        onPress={() => navigation.navigate('Home')}
         style={styles.backButton}
-        onPress={() => navigation.navigate("Home")}
+        labelStyle={styles.buttonLabel}
       >
-        <Text style={messageLayoutStyles.buttonText}>Quay lại</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
-        <Text style={messageLayoutStyles.buttonText}>Gửi</Text>
-      </TouchableOpacity>
+        Quay lại
+      </PaperButton>
+      <PaperButton
+        mode="contained"
+        onPress={handleSend}
+        style={styles.sendButton}
+        labelStyle={styles.buttonLabel}
+      >
+        Gửi
+      </PaperButton>
     </>
   );
 
-  const textColor = theme === 'day' ? '#3E2723' : '#FFFFFF';
+  const { text } = appTheme[currentTheme];
 
   return (
-    <MessageLayout title="Hãy gửi thông điệp của bạn" buttons={buttons} theme={theme}>
+    <MessageLayout title="Hãy gửi thông điệp của bạn" buttons={buttons} theme={currentTheme}>
       <TextInput
-        style={[styles.textInput, { color: textColor }]}
+        style={[styles.textInput, { color: text }]}
         multiline
         placeholder="Viết điều bạn muốn nói..."
         placeholderTextColor="#777"
@@ -51,28 +54,3 @@ export default function WriteMessageScreen({ route, navigation }: Props) {
     </MessageLayout>
   );
 }
-
-const styles = StyleSheet.create({
-  textInput: {
-    backgroundColor: 'transparent',
-    width: scale(700),
-    height: verticalScale(1200),
-    textAlignVertical: 'top',
-    padding: verticalScale(10),
-    fontSize: moderateScale(32),
-    lineHeight: moderateScale(48),
-    marginTop: 0,
-  },
-  sendButton: {
-    backgroundColor: "#0077B6",
-    borderRadius: scale(30),
-    paddingVertical: verticalScale(20),
-    paddingHorizontal: scale(80),
-  },
-  backButton: {
-    backgroundColor: "#486273",
-    borderRadius: scale(30),
-    paddingVertical: verticalScale(20),
-    paddingHorizontal: scale(60),
-  },
-});

@@ -1,19 +1,10 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  ImageBackground,
-  StatusBar,
-} from 'react-native';
-import { scale, verticalScale, moderateScale } from '../utils/scaling';
+import { View, Text, ImageBackground, StatusBar } from 'react-native';
+import { TextInput as PaperTextInput, Button as PaperButton } from 'react-native-paper';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
-import { commonStyles } from '../styles/common';
-
-const bgImage = require('../../asset/image/letter_background.png');
+import { styles } from './styles/RegisterScreen.style';
+import { theme } from '../themes/theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Register'>;
 
@@ -25,98 +16,54 @@ export default function RegisterScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
-      <ImageBackground source={bgImage} style={styles.background} resizeMode="cover">
+      <ImageBackground
+        source={theme.light.letter_bg}
+        style={styles.background}
+        resizeMode="cover"
+      >
         <View style={styles.overlay}>
           <View style={styles.registerBox}>
             <Text style={styles.title}>ĐĂNG KÝ</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Tên đăng nhập"
-              placeholderTextColor="#777"
-              onChangeText={setUsername}
+            <PaperTextInput
+              label="Tên đăng nhập"
               value={username}
-            />
-            <TextInput
+              onChangeText={setUsername}
               style={styles.input}
-              placeholder="Mật khẩu"
-              placeholderTextColor="#777"
-              secureTextEntry
-              onChangeText={setPassword}
+              mode="outlined"
+            />
+            <PaperTextInput
+              label="Mật khẩu"
               value={password}
-            />
-            <TextInput
+              onChangeText={setPassword}
               style={styles.input}
-              placeholder="Nhập lại mật khẩu"
-              placeholderTextColor="#777"
               secureTextEntry
-              onChangeText={setConfirmPassword}
-              value={confirmPassword}
+              mode="outlined"
             />
-            <TouchableOpacity style={styles.registerButton} onPress={() => navigation.navigate('Home')}>
-              <Text style={styles.registerButtonText}>ĐĂNG KÝ</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+            <PaperTextInput
+              label="Nhập lại mật khẩu"
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+              style={styles.input}
+              secureTextEntry
+              mode="outlined"
+            />
+            <PaperButton
+              mode="contained"
+              onPress={() => navigation.navigate('Home')}
+              style={styles.registerButton}
+              labelStyle={styles.registerButtonLabel}
+            >
+              ĐĂNG KÝ
+            </PaperButton>
+            <PaperButton
+              onPress={() => navigation.navigate('Login')}
+              style={styles.loginButton}
+            >
               <Text style={styles.loginText}>Đăng nhập</Text>
-            </TouchableOpacity>
+            </PaperButton>
           </View>
         </View>
       </ImageBackground>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    ...commonStyles.container,
-  },
-  background: {
-    ...commonStyles.background,
-  },
-  overlay: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  registerBox: {
-    width: scale(821),
-    height: verticalScale(1431),
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    borderRadius: scale(64),
-    alignItems: 'center',
-    paddingTop: verticalScale(66),
-  },
-  title: {
-    fontSize: moderateScale(80),
-    fontWeight: 'bold',
-    color: '#000',
-    marginBottom: verticalScale(100),
-  },
-  input: {
-    width: scale(615),
-    height: verticalScale(164),
-    backgroundColor: 'rgba(220, 220, 220, 0.4)',
-    borderRadius: scale(32),
-    paddingHorizontal: scale(20),
-    fontSize: moderateScale(48),
-    marginBottom: verticalScale(60),
-  },
-  registerButton: {
-    width: scale(475),
-    height: verticalScale(164),
-    backgroundColor: 'rgba(79, 1, 108, 0.66)',
-    borderRadius: scale(32),
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: verticalScale(60),
-  },
-  registerButtonText: {
-    color: '#FFF',
-    fontSize: moderateScale(48),
-    fontWeight: 'bold',
-  },
-  loginText: {
-    fontSize: moderateScale(32),
-    color: '#000',
-    marginTop: verticalScale(40),
-  },
-});
