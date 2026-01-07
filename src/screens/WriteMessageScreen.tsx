@@ -19,9 +19,7 @@ export default function WriteMessageScreen({ route, navigation }: Props) {
 
   const handleSend = () => {
     console.log("Message sent:", message);
-    Alert.alert("Đã gửi", "Thông điệp của bạn đã được thả trôi theo biển.", [
-      { text: "OK", onPress: () => navigation.navigate("Home") },
-    ]);
+    navigation.navigate("LoadingSend", { theme: theme });
   };
 
   const buttons = (

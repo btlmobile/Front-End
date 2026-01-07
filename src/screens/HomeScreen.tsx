@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   StatusBar,
   Image,
+  Modal,
+  Switch,
 } from "react-native";
 import { scale, verticalScale, moderateScale } from "../utils/scaling";
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -15,12 +17,16 @@ import { RootStackParamList } from "../navigation/types";
 
 const dayBgImage = require("../../asset/image/home_bg_day.png");
 const nightBgImage = require("../../asset/image/home_bg_night.png");
-const gearIcon = require("../../asset/image/gear_icon.png");
+const settingsIcon = require("../../asset/image/gear_icon.png");
+const accountIcon = require("../../asset/image/account_icon.png");
+const chatIcon = require("../../asset/image/chat_icon.png");
+const baloIcon = require("../../asset/image/balo_icon.png");
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 export default function HomeScreen({ navigation }: Props) {
   const [theme, setTheme] = useState('day');
+  const [modalVisible, setModalVisible] = useState(false);
 
   const toggleTheme = () => {
     setTheme(prevTheme => prevTheme === 'day' ? 'night' : 'day');
@@ -39,10 +45,58 @@ export default function HomeScreen({ navigation }: Props) {
         resizeMode="cover"
       >
         <View style={styles.overlay}>
-          <TouchableOpacity style={styles.gearIconContainer} onPress={toggleTheme}>
-            <Image source={gearIcon} style={styles.gearIcon} />
+          <TouchableOpacity style={styles.accountIconContainer} onPress={() => navigation.navigate('Account', { theme: theme })}>
+            <Image source={accountIcon} style={styles.icon} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.settingsIconContainer} onPress={() => setModalVisible(true)}>
+            <Image source={settingsIcon} style={styles.icon} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.chatIconContainer} onPress={() => {}}>
+            <Image source={chatIcon} style={styles.icon} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.baloIconContainer} onPress={() => navigation.navigate('Balo', { theme: theme })}>
+            <Image source={baloIcon} style={styles.icon} />
           </TouchableOpacity>
           
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <TouchableOpacity
+                  style={styles.closeButton}
+                  onPress={() => setModalVisible(!modalVisible)}
+                >
+                  <Text style={styles.closeButtonText}>X</Text>
+                </TouchableOpacity>
+                <View style={styles.modalOption}>
+                  <Text style={styles.modalText}>Ngày/Đêm</Text>
+                  <Switch
+                    trackColor={{ false: "#767577", true: "#81b0ff" }}
+                    thumbColor={theme === 'night' ? "#f5dd4b" : "#f4f3f4"}
+                    ios_backgroundColor="#3e3e3e"
+                    onValueChange={toggleTheme}
+                    value={theme === 'night'}
+                  />
+                </View>
+                <TouchableOpacity style={styles.modalOption} onPress={() => {setModalVisible(false); navigation.navigate('Introduce', { theme: theme })}}>
+                  <Text style={styles.modalText}>Giới thiệu</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.modalOption}>
+                  <Text style={styles.modalText}>Lộ trình phát triển</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.modalOption} onPress={() => {setModalVisible(false); navigation.navigate('Support', { theme: theme })}}>
+                  <Text style={styles.modalText}>Hỗ Trợ/Phản hồi</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+
           <View style={styles.contentContainer}>
             <Text style={[styles.title, { color: titleColor }]}>Thông Điệp Trong Chai</Text>
             
@@ -90,14 +144,29 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
-  gearIconContainer: {
+  icon: {
+    width: scale(80),
+    height: verticalScale(80),
+  },
+  accountIconContainer: {
+    position: 'absolute',
+    top: verticalScale(50),
+    left: scale(20),
+  },
+  settingsIconContainer: {
     position: 'absolute',
     top: verticalScale(50),
     right: scale(20),
   },
-  gearIcon: {
-    width: scale(50),
-    height: verticalScale(50),
+  chatIconContainer: {
+    position: 'absolute',
+    bottom: verticalScale(50),
+    left: scale(20),
+  },
+  baloIconContainer: {
+    position: 'absolute',
+    bottom: verticalScale(50),
+    right: scale(20),
   },
   title: {
     fontSize: moderateScale(60),
@@ -143,5 +212,45 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontWeight: "bold",
     fontSize: moderateScale(50),
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+  },
+  closeButtonText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  modalOption: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    paddingVertical: 15,
+  },
+  modalText: {
+    fontSize: 18,
   },
 });
