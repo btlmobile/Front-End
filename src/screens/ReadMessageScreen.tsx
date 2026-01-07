@@ -16,7 +16,8 @@ const dummyMessage = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. S
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ReadMessage'>;
 
-export default function ReadMessageScreen({ navigation }: Props) {
+export default function ReadMessageScreen({ route, navigation }: Props) {
+  const theme = route.params?.theme || 'day';
 
   const handleKeep = () => {
     Alert.alert("Đã lưu", "Thông điệp đã được lưu vào bộ sưu tập của bạn.");
@@ -26,7 +27,7 @@ export default function ReadMessageScreen({ navigation }: Props) {
     <>
       <TouchableOpacity
         style={styles.walkButton}
-        onPress={() => navigation.navigate("Waiting")}
+        onPress={() => navigation.navigate("Waiting", { theme: theme })}
       >
         <Text style={messageLayoutStyles.buttonText}>Dạo biển</Text>
       </TouchableOpacity>
@@ -36,11 +37,13 @@ export default function ReadMessageScreen({ navigation }: Props) {
     </>
   );
 
+  const textColor = theme === 'day' ? '#3E2723' : '#FFFFFF';
+
   return (
-    <MessageLayout title="Một thông điệp từ biển cả" buttons={buttons}>
+    <MessageLayout title="Một thông điệp từ biển cả" buttons={buttons} theme={theme}>
       <View style={styles.messageContainer}>
         <ScrollView nestedScrollEnabled={true}>
-          <Text style={styles.messageText}>{dummyMessage.repeat(5)}</Text>
+          <Text style={[styles.messageText, { color: textColor }]}>{dummyMessage.repeat(5)}</Text>
         </ScrollView>
       </View>
     </MessageLayout>
@@ -56,7 +59,6 @@ const styles = StyleSheet.create({
     marginTop: 0,
   },
   messageText: {
-    color: '#3E2723',
     fontSize: moderateScale(32),
     lineHeight: moderateScale(48),
   },

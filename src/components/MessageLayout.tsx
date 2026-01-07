@@ -9,15 +9,20 @@ import {
 import { scale, verticalScale, moderateScale } from "../utils/scaling";
 import { commonStyles } from "../styles/common";
 
-const bgImage = require("../../asset/image/write_message_bg.png");
+const dayBgImage = require("../../asset/image/read_bg.png");
+const nightBgImage = require("../../asset/image/read_bg_night.png");
 
 type MessageLayoutProps = {
   title: string;
   children: React.ReactNode;
   buttons: React.ReactNode;
+  theme?: 'day' | 'night';
 };
 
-export default function MessageLayout({ title, children, buttons }: MessageLayoutProps) {
+export default function MessageLayout({ title, children, buttons, theme = 'day' }: MessageLayoutProps) {
+  const bgImage = theme === 'day' ? dayBgImage : nightBgImage;
+  const titleColor = theme === 'day' ? '#5D4037' : '#FFFFFF';
+
   return (
     <View style={messageLayoutStyles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
@@ -27,7 +32,7 @@ export default function MessageLayout({ title, children, buttons }: MessageLayou
         resizeMode="cover"
       >
         <View style={messageLayoutStyles.overlay}>
-          <Text style={messageLayoutStyles.title}>{title}</Text>
+          <Text style={[messageLayoutStyles.title, { color: titleColor }]}>{title}</Text>
           {children}
           <View style={messageLayoutStyles.buttonContainer}>
             {buttons}
@@ -54,7 +59,6 @@ export const messageLayoutStyles = StyleSheet.create({
   title: {
     fontSize: moderateScale(50),
     fontWeight: "bold",
-    color: "#5D4037",
     textAlign: "center",
     position: 'absolute',
     top: verticalScale(100),

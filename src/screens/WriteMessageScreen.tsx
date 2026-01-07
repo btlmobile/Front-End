@@ -13,8 +13,9 @@ import MessageLayout, { messageLayoutStyles } from "../components/MessageLayout"
 
 type Props = NativeStackScreenProps<RootStackParamList, 'WriteMessage'>;
 
-export default function WriteMessageScreen({ navigation }: Props) {
+export default function WriteMessageScreen({ route, navigation }: Props) {
   const [message, setMessage] = useState("");
+  const theme = route.params?.theme || 'day';
 
   const handleSend = () => {
     console.log("Message sent:", message);
@@ -37,10 +38,12 @@ export default function WriteMessageScreen({ navigation }: Props) {
     </>
   );
 
+  const textColor = theme === 'day' ? '#3E2723' : '#FFFFFF';
+
   return (
-    <MessageLayout title="Hãy gửi thông điệp của bạn" buttons={buttons}>
+    <MessageLayout title="Hãy gửi thông điệp của bạn" buttons={buttons} theme={theme}>
       <TextInput
-        style={styles.textInput}
+        style={[styles.textInput, { color: textColor }]}
         multiline
         placeholder="Viết điều bạn muốn nói..."
         placeholderTextColor="#777"
@@ -58,7 +61,6 @@ const styles = StyleSheet.create({
     height: verticalScale(1200),
     textAlignVertical: 'top',
     padding: verticalScale(10),
-    color: '#3E2723',
     fontSize: moderateScale(32),
     lineHeight: moderateScale(48),
     marginTop: 0,

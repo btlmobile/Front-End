@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -13,14 +13,23 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { commonStyles } from "../styles/common";
 import { RootStackParamList } from "../navigation/types";
 
-const bgImage = require("../../asset/image/home_bg.png");
-const image2 = require("../../asset/image/image2.png");
-const image4 = require("../../asset/image/image4.png");
-const image5 = require("../../asset/image/image5.png");
+const dayBgImage = require("../../asset/image/home_bg_day.png");
+const nightBgImage = require("../../asset/image/home_bg_night.png");
+const gearIcon = require("../../asset/image/gear_icon.png");
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 export default function HomeScreen({ navigation }: Props) {
+  const [theme, setTheme] = useState('day');
+
+  const toggleTheme = () => {
+    setTheme(prevTheme => prevTheme === 'day' ? 'night' : 'day');
+  };
+
+  const bgImage = theme === 'day' ? dayBgImage : nightBgImage;
+  const titleColor = theme === 'day' ? '#4E4330' : '#FFFFFF';
+  const subtitleColor = theme === 'day' ? '#D500A7' : '#FFC2F2';
+
   return (
     <View style={styles.container} testID="home-screen-container">
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
@@ -30,28 +39,28 @@ export default function HomeScreen({ navigation }: Props) {
         resizeMode="cover"
       >
         <View style={styles.overlay}>
-          <Image source={image2} style={styles.image2} />
-          <Image source={image4} style={styles.image4} />
-          <Image source={image5} style={styles.image5} />
+          <TouchableOpacity style={styles.gearIconContainer} onPress={toggleTheme}>
+            <Image source={gearIcon} style={styles.gearIcon} />
+          </TouchableOpacity>
           
           <View style={styles.contentContainer}>
-            <Text style={styles.title}>Thông Điệp Trong Chai</Text>
+            <Text style={[styles.title, { color: titleColor }]}>Thông Điệp Trong Chai</Text>
             
             <View style={styles.centerContent}>
-              <Text style={styles.subtitle}>
+              <Text style={[styles.subtitle, { color: subtitleColor }]}>
                 Viết ra lời tâm sự, thả theo sóng biển
               </Text>
 
               <TouchableOpacity
                 style={styles.primaryButton}
-                onPress={() => navigation.navigate("WriteMessage")}
+                onPress={() => navigation.navigate("WriteMessage", { theme: theme })}
               >
                 <Text style={styles.buttonText}>Viết thư</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={styles.secondaryButton}
-                onPress={() => navigation.navigate("Waiting")}
+                onPress={() => navigation.navigate("Waiting", { theme: theme })}
               >
                 <Text style={styles.buttonText}>Dạo biển</Text>
               </TouchableOpacity>
@@ -81,31 +90,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
-  image2: {
+  gearIconContainer: {
     position: 'absolute',
-    top: verticalScale(109),
-    left: scale(55),
-    width: scale(81),
-    height: verticalScale(92),
+    top: verticalScale(50),
+    right: scale(20),
   },
-  image4: {
-    position: 'absolute',
-    top: verticalScale(108),
-    right: scale(67),
-    width: scale(73),
-    height: verticalScale(93),
-  },
-  image5: {
-    position: 'absolute',
-    top: verticalScale(260),
-    right: scale(67),
-    width: scale(73),
-    height: verticalScale(75),
+  gearIcon: {
+    width: scale(50),
+    height: verticalScale(50),
   },
   title: {
     fontSize: moderateScale(60),
     fontWeight: "bold",
-    color: "#F0F4F8",
     textAlign: "center",
     textShadowColor: 'rgba(0, 0, 0, 0.7)',
     textShadowOffset: { width: 0, height: 4 },
@@ -120,7 +116,6 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: moderateScale(35),
     fontWeight: "bold",
-    color: "#F0F4F8",
     textAlign: "center",
     marginBottom: verticalScale(100),
     textShadowColor: 'rgba(0, 0, 0, 0.7)',

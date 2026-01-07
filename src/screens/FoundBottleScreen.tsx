@@ -13,12 +13,20 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from "../navigation/types";
 import { commonStyles } from "../styles/common";
 
-const bgImage = require("../../asset/image/found_bottle_bg.png");
-const bottleImage = require("../../asset/image/bottle-6016e4.png");
+const dayBgImage = require("../../asset/image/image_7.png");
+const nightBgImage = require("../../asset/image/beach_night.png");
+const dayBottleImage = require("../../asset/image/bottle-6016e4.png");
+const nightBottleImage = require("../../asset/image/bottle_on_the_sand_night.png");
 
 type Props = NativeStackScreenProps<RootStackParamList, 'FoundBottle'>;
 
-export default function FoundBottleScreen({ navigation }: Props) {
+export default function FoundBottleScreen({ route, navigation }: Props) {
+  const theme = route.params?.theme || 'day';
+
+  const bgImage = theme === 'day' ? dayBgImage : nightBgImage;
+  const bottleImage = theme === 'day' ? dayBottleImage : nightBottleImage;
+  const messageColor = theme === 'day' ? '#F0F4F8' : '#FFFFFF';
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
@@ -30,7 +38,7 @@ export default function FoundBottleScreen({ navigation }: Props) {
         <View style={styles.overlay}>
           <View style={styles.messageBox}>
             <Image source={bottleImage} style={styles.bottleImage} />
-            <Text style={styles.messageText}>
+            <Text style={[styles.messageText, { color: messageColor }]}>
               Tôi tình cờ tìm thấy một chiếc chai trôi dạt vào bờ. Tôi tự hỏi nó
               chứa đựng những bí mật gì...
             </Text>
@@ -44,7 +52,7 @@ export default function FoundBottleScreen({ navigation }: Props) {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.openButton}
-              onPress={() => navigation.navigate("ReadMessage")}
+              onPress={() => navigation.navigate("ReadMessage", { theme: theme })}
             >
               <Text style={styles.buttonText}>Mở chai</Text>
             </TouchableOpacity>
@@ -85,7 +93,6 @@ const styles = StyleSheet.create({
     borderRadius: scale(20),
   },
   messageText: {
-    color: "#F0F4F8",
     fontSize: moderateScale(32),
     textAlign: "center",
     marginBottom: verticalScale(40),
