@@ -2,6 +2,8 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import { Alert } from 'react-native';
 import ReadMessageScreen from '../ReadMessageScreen';
+import { storeBottle } from '../../services/api';
+import { Button as PaperButton } from 'react-native-paper';
 
 jest.mock('../../services/api', () => ({
   storeBottle: jest.fn().mockResolvedValue({}),
@@ -102,6 +104,41 @@ describe('ReadMessageScreen', () => {
         'Đã lưu',
         'Thông điệp đã được lưu vào bộ sưu tập của bạn.'
       );
+    });
+  });
+
+  it('should show login alert when guest tries to keep bottle', () => {
+    const guestRoute = {
+      ...mockRoute,
+      params: { theme: 'light', bottle: mockBottle, isGuest: true },
+    };
+
+    const { UNSAFE_getAllByType } = render(
+      <ReadMessageScreen navigation={mockNavigation} route={guestRoute} />
+    );
+
+    const keepButton = UNSAFE_getAllByType(PaperButton).find(
+      (button) => button.props.children === 'Lưu giữ'
+    );
+    keepButton?.props.onPress();
+
+    expect(Alert.alert).toHaveBeenCalledWith(
+      'Yêu cầu đăng nhập',
+      'Bạn cần đăng nhập để sử dụng chức năng này.'
+    );
+  });
+
+  it('should alert when keep fails', async () => {
+    (storeBottle as jest.Mock).mockRejectedValueOnce(new Error('fail'));
+
+    const { getByText } = render(
+      <ReadMessageScreen navigation={mockNavigation} route={mockRoute} />
+    );
+
+    fireEvent.press(getByText('Lưu giữ'));
+
+    await waitFor(() => {
+      expect(Alert.alert).toHaveBeenCalledWith('Lỗi', 'Không thể lưu thông điệp.');
     });
   });
 

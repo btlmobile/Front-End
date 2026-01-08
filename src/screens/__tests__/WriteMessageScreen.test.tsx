@@ -1,12 +1,15 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import WriteMessageScreen from '../WriteMessageScreen';
+import { Alert } from 'react-native';
 import { createBottle, createAnonymousBottle } from '../../services/api';
 
 jest.mock('../../services/api', () => ({
   createBottle: jest.fn().mockResolvedValue({}),
   createAnonymousBottle: jest.fn().mockResolvedValue({}),
 }));
+
+jest.spyOn(Alert, 'alert');
 
 const mockNavigate = jest.fn();
 const mockNavigation = {
@@ -124,9 +127,62 @@ describe('WriteMessageScreen', () => {
     fireEvent.press(sendButton);
 
     await waitFor(() => {
-      expect(mockedCreateAnonymousBottle).toHaveBeenCalledWith({ content: 'My test message', type: 'text' });
+      expect(mockedCreateAnonymousBottle).toHaveBeenCalledWith({
+        content: 'My test message',
+        type: 'text',
+      });
       expect(mockNavigate).toHaveBeenCalledWith('LoadingSend', { theme: 'light' });
     });
+  });
+
+  it('should send anonymously when toggle is enabled', async () => {
+    const { getByText, getByPlaceholderText, getByRole } = render(
+      <WriteMessageScreen navigation={mockNavigation} route={mockRoute} />
+    );
+
+    const textInput = getByPlaceholderText('Viết điều bạn muốn nói...');
+    fireEvent.changeText(textInput, 'Anonymous message');
+
+    fireEvent(getByRole('switch'), 'valueChange', true);
+
+    fireEvent.press(getByText('Gửi'));
+
+    await waitFor(() => {
+      expect(mockedCreateAnonymousBottle).toHaveBeenCalledWith({
+        content: 'Anonymous message',
+        type: 'text',
+      });
+    });
+  });
+
+  it('should show alert when send fails', async () => {
+    mockedCreateBottle.mockRejectedValueOnce(new Error('fail'));
+
+    const { getByText, getByPlaceholderText } = render(
+      <WriteMessageScreen navigation={mockNavigation} route={mockRoute} />
+    );
+
+    fireEvent.changeText(getByPlaceholderText('Viết điều bạn muốn nói...'), 'Fail');
+    fireEvent.press(getByText('Gửi'));
+
+    await waitFor(() => {
+      expect(Alert.alert).toHaveBeenCalledWith('Lỗi', 'Không thể gửi thông điệp.');
+    });
+  });
+
+  it('should enable anonymous mode for guest users', () => {
+    const guestRoute = {
+      key: 'test',
+      name: 'WriteMessage' as const,
+      params: { theme: 'light', isGuest: true },
+    };
+
+    const { getByRole } = render(
+      <WriteMessageScreen navigation={mockNavigation} route={guestRoute} />
+    );
+
+    expect(getByRole('switch').props.value).toBe(true);
+    expect(getByRole('switch').props.disabled).toBe(true);
   });
 
   it('should allow multiline text input', () => {

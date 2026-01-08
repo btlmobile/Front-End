@@ -44,4 +44,41 @@ describe('LoginScreen', () => {
       expect(mockNavigation.navigate).toHaveBeenCalledWith('Home', { guest: false });
     });
   });
+
+  it('should navigate to Register when pressing "Đăng ký"', () => {
+    const { getByText } = render(<LoginScreen navigation={mockNavigation} />);
+
+    fireEvent.press(getByText('Đăng ký'));
+
+    expect(mockNavigation.navigate).toHaveBeenCalledWith('Register');
+  });
+
+  it('should navigate to Home as guest when pressing guest button', () => {
+    const { getByText } = render(<LoginScreen navigation={mockNavigation} />);
+
+    fireEvent.press(getByText('Tiếp tục không cần đăng nhập'));
+
+    expect(mockNavigation.navigate).toHaveBeenCalledWith('Home', { guest: true });
+  });
+
+  it('should show alert when login fails', async () => {
+    (login as jest.Mock).mockRejectedValueOnce(new Error('fail'));
+
+    const { getAllByText, getByLabelText } = render(
+      <LoginScreen navigation={mockNavigation} />
+    );
+
+    fireEvent.changeText(getByLabelText('Tên đăng nhập'), 'tester');
+    fireEvent.changeText(getByLabelText('Mật khẩu'), 'badpass');
+
+    const [_, loginButton] = getAllByText('ĐĂNG NHẬP');
+    fireEvent.press(loginButton);
+
+    await waitFor(() => {
+      expect(Alert.alert).toHaveBeenCalledWith(
+        'Lỗi',
+        'Tên đăng nhập hoặc mật khẩu không đúng.'
+      );
+    });
+  });
 });

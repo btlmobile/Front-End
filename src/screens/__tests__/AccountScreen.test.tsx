@@ -43,6 +43,31 @@ describe('AccountScreen', () => {
     expect(getByText(/Bạn cần đăng nhập/)).toBeTruthy();
   });
 
+  it('should navigate to Login from guest prompt', () => {
+    const guestRoute = {
+      ...baseRoute,
+      params: { theme: 'light' as const, isGuest: true },
+    };
+
+    const { getByText } = render(
+      <AccountScreen navigation={mockNavigation} route={guestRoute} />
+    );
+
+    fireEvent.press(getByText('Đăng nhập'));
+
+    expect(mockNavigation.navigate).toHaveBeenCalledWith('Login');
+  });
+
+  it('should alert when loading user info fails', async () => {
+    (getUserInfo as jest.Mock).mockRejectedValueOnce(new Error('fail'));
+
+    render(<AccountScreen navigation={mockNavigation} route={baseRoute} />);
+
+    await waitFor(() => {
+      expect(Alert.alert).toHaveBeenCalledWith('Lỗi', 'Không thể tải thông tin người dùng.');
+    });
+  });
+
   it('should load user info and allow logout', async () => {
     const { getByText } = render(
       <AccountScreen navigation={mockNavigation} route={baseRoute} />
