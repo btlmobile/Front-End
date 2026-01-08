@@ -10,6 +10,8 @@ type Props = NativeStackScreenProps<RootStackParamList, 'FoundBottle'>;
 
 export default function FoundBottleScreen({ route, navigation }: Props) {
   const currentTheme = route.params?.theme || 'light';
+  const bottle = route.params?.bottle;
+  const isGuest = route.params?.isGuest || false;
   const { home_bg, bottle_at_the_sea, text } = appTheme[currentTheme];
 
   return (
@@ -27,7 +29,7 @@ export default function FoundBottleScreen({ route, navigation }: Props) {
           <View style={styles.buttonContainer}>
             <PaperButton
               mode="contained"
-              onPress={() => navigation.navigate('Home')}
+              onPress={() => navigation.navigate('Home', { guest: isGuest })}
               style={styles.returnButton}
               labelStyle={styles.buttonLabel}
             >
@@ -35,7 +37,9 @@ export default function FoundBottleScreen({ route, navigation }: Props) {
             </PaperButton>
             <PaperButton
               mode="contained"
-              onPress={() => navigation.navigate('ReadMessage', { theme: currentTheme })}
+              onPress={() =>
+                navigation.navigate('ReadMessage', { theme: currentTheme, bottle: bottle, isGuest: isGuest })
+              }
               style={styles.openButton}
               labelStyle={styles.buttonLabel}
             >

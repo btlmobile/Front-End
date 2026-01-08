@@ -52,6 +52,13 @@ export const styles = StyleSheet.create({
     fontSize: moderateScale(theme.fontSize.m),
     color: theme.light.text,
   },
+  guestButton: {
+    marginTop: verticalScale(15),
+  },
+  guestText: {
+    fontSize: moderateScale(theme.fontSize.m),
+    color: theme.light.text,
+  },
 });
 
 

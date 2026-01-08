@@ -16,48 +16,43 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   contentBox: {
-    width: scale(774),
+    width: scale(922),
     height: verticalScale(1500),
-    backgroundColor: 'rgba(228, 228, 228, 0.8)',
+    backgroundColor: 'rgba(217, 217, 217, 0.8)',
     borderRadius: scale(32),
     alignItems: 'center',
     padding: scale(40),
   },
-  title: {
-    fontSize: moderateScale(theme.fontSize.l),
-    fontWeight: 'bold',
-    marginTop: verticalScale(40),
-    marginBottom: verticalScale(80),
+  messageScrollView: {
+    flex: 1,
+    width: '100%',
+    padding: scale(20),
   },
-  emptyText: {
+  messageText: {
     fontSize: moderateScale(theme.fontSize.m),
-    textAlign: 'center',
+    marginBottom: verticalScale(20),
+  },
+  creatorText: {
+    fontSize: moderateScale(theme.fontSize.s),
+    fontStyle: 'italic',
+    textAlign: 'right',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '80%',
+    marginTop: verticalScale(30),
   },
   backButton: {
-    position: 'absolute',
-    top: verticalScale(200),
-    right: scale(80),
+    paddingVertical: verticalScale(10),
+    paddingHorizontal: scale(20),
   },
-  list: {
-    width: '100%',
+  deleteButton: {
+    paddingVertical: verticalScale(10),
+    paddingHorizontal: scale(20),
   },
-  bottleItem: {
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    borderRadius: scale(20),
-    padding: scale(20),
-    marginBottom: verticalScale(20),
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  bottleMessage: {
-    flex: 1,
-    fontSize: moderateScale(theme.fontSize.s),
-    marginRight: scale(10),
-  },
-  bottleActions: {
-    flexDirection: 'row',
+  buttonLabel: {
+    fontSize: moderateScale(theme.fontSize.m),
+    fontWeight: 'bold',
   },
 });
-
-

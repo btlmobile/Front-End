@@ -7,6 +7,7 @@ import {
   Image,
   Modal,
   Switch,
+  Alert,
 } from 'react-native';
 import { Button as PaperButton, IconButton } from 'react-native-paper';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -16,12 +17,24 @@ import { theme } from '../themes/theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
-export default function HomeScreen({ navigation }: Props) {
+export default function HomeScreen({ route, navigation }: Props) {
+  const isGuest = route.params?.guest || false;
   const [currentTheme, setCurrentTheme] = useState('light');
   const [modalVisible, setModalVisible] = useState(false);
 
   const toggleTheme = () => {
     setCurrentTheme(currentTheme === 'light' ? 'dark' : 'light');
+  };
+
+  const handleGuestAccess = () => {
+    Alert.alert(
+      'Yêu cầu đăng nhập',
+      'Bạn cần đăng nhập để sử dụng chức năng này.',
+      [
+        { text: 'Đăng nhập', onPress: () => navigation.navigate('Login') },
+        { text: 'Hủy', style: 'cancel' },
+      ]
+    );
   };
 
   const { home_bg, titleColor, subtitleColor } = theme[currentTheme];
@@ -35,7 +48,11 @@ export default function HomeScreen({ navigation }: Props) {
           <IconButton
             icon={() => <Image source={accountIcon} style={styles.icon} />}
             style={styles.accountIconContainer}
-            onPress={() => navigation.navigate('Account', { theme: currentTheme })}
+            onPress={() =>
+              isGuest
+                ? handleGuestAccess()
+                : navigation.navigate('Account', { theme: currentTheme, isGuest: isGuest })
+            }
           />
           <IconButton
             icon={() => <Image source={settingsIcon} style={styles.icon} />}
@@ -45,12 +62,16 @@ export default function HomeScreen({ navigation }: Props) {
           <IconButton
             icon={() => <Image source={chatIcon} style={styles.icon} />}
             style={styles.chatIconContainer}
-            onPress={() => {console.log("Chat icon pressed");}}
+            onPress={() => {
+              console.log('Chat icon pressed');
+            }}
           />
           <IconButton
             icon={() => <Image source={baloIcon} style={styles.icon} />}
             style={styles.baloIconContainer}
-            onPress={() => navigation.navigate('Balo', { theme: currentTheme })}
+            onPress={() =>
+              isGuest ? handleGuestAccess() : navigation.navigate('Balo', { theme: currentTheme, isGuest: isGuest })
+            }
           />
 
           <Modal
@@ -99,15 +120,17 @@ export default function HomeScreen({ navigation }: Props) {
                 >
                   <Text style={styles.modalText}>Hỗ Trợ/Phản hồi</Text>
                 </PaperButton>
-                <PaperButton
-                  style={styles.modalOption}
-                  onPress={() => {
-                    setModalVisible(false);
-                    navigation.navigate('Login');
-                  }}
-                >
-                  <Text style={styles.modalText}>Đăng xuất</Text>
-                </PaperButton>
+                {!isGuest && (
+                  <PaperButton
+                    style={styles.modalOption}
+                    onPress={() => {
+                      setModalVisible(false);
+                      navigation.navigate('Login');
+                    }}
+                  >
+                    <Text style={styles.modalText}>Đăng xuất</Text>
+                  </PaperButton>
+                )}
               </View>
             </View>
           </Modal>
@@ -122,7 +145,9 @@ export default function HomeScreen({ navigation }: Props) {
 
               <PaperButton
                 mode="contained"
-                onPress={() => navigation.navigate('WriteMessage', { theme: currentTheme })}
+                onPress={() =>
+                  navigation.navigate('WriteMessage', { theme: currentTheme, isGuest: isGuest })
+                }
                 style={styles.primaryButton}
                 labelStyle={styles.buttonLabel}
               >
@@ -131,7 +156,7 @@ export default function HomeScreen({ navigation }: Props) {
 
               <PaperButton
                 mode="contained"
-                onPress={() => navigation.navigate('Waiting', { theme: currentTheme })}
+                onPress={() => navigation.navigate('Waiting', { theme: currentTheme, isGuest: isGuest })}
                 style={styles.secondaryButton}
                 labelStyle={styles.buttonLabel}
               >

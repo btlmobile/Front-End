@@ -1,16 +1,35 @@
 import React, { useState } from 'react';
-import { View, Text, ImageBackground, StatusBar } from 'react-native';
+import { View, Text, ImageBackground, StatusBar, Alert } from 'react-native';
 import { TextInput as PaperTextInput, Button as PaperButton } from 'react-native-paper';
+import * as SecureStore from 'expo-secure-store';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { styles } from './styles/LoginScreen.style';
 import { theme } from '../themes/theme';
+import { login } from '../services/api';
+import api from '../services/api';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
 export default function LoginScreen({ navigation }: Props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async () => {
+    setLoading(true);
+    try {
+      const response = await login({ username, password });
+      const { token } = response.data;
+      await SecureStore.setItemAsync('token', token);
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      navigation.navigate('Home');
+    } catch (error) {
+      Alert.alert('Lỗi', 'Tên đăng nhập hoặc mật khẩu không đúng.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -29,6 +48,7 @@ export default function LoginScreen({ navigation }: Props) {
               onChangeText={setUsername}
               style={styles.input}
               mode="outlined"
+              disabled={loading}
             />
             <PaperTextInput
               label="Mật khẩu"
@@ -37,20 +57,31 @@ export default function LoginScreen({ navigation }: Props) {
               style={styles.input}
               secureTextEntry
               mode="outlined"
+              disabled={loading}
             />
             <PaperButton
               mode="contained"
-              onPress={() => navigation.navigate('Home')}
+              onPress={handleLogin}
               style={styles.loginButton}
               labelStyle={styles.loginButtonLabel}
+              loading={loading}
+              disabled={loading}
             >
               ĐĂNG NHẬP
             </PaperButton>
             <PaperButton
               onPress={() => navigation.navigate('Register')}
               style={styles.registerButton}
+              disabled={loading}
             >
               <Text style={styles.registerText}>Đăng ký</Text>
+            </PaperButton>
+            <PaperButton
+              onPress={() => navigation.navigate('Home', { guest: true })}
+              style={styles.guestButton}
+              disabled={loading}
+            >
+              <Text style={styles.guestText}>Tiếp tục không cần đăng nhập</Text>
             </PaperButton>
           </View>
         </View>

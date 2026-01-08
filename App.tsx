@@ -14,6 +14,7 @@ import IntroduceScreen from './src/screens/IntroduceScreen';
 import SupportScreen from './src/screens/SupportScreen';
 import AccountScreen from './src/screens/AccountScreen';
 import BaloScreen from './src/screens/BaloScreen';
+import StoredBottleDetailScreen from './src/screens/StoredBottleDetailScreen';
 import { RootStackParamList } from './src/navigation/types';
 import { paperTheme } from './src/themes/paperTheme';
 
@@ -41,6 +42,7 @@ export default function App() {
           <Stack.Screen name="Support" component={SupportScreen} />
           <Stack.Screen name="Account" component={AccountScreen} />
           <Stack.Screen name="Balo" component={BaloScreen} />
+          <Stack.Screen name="StoredBottleDetail" component={StoredBottleDetailScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>

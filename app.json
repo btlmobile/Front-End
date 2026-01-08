@@ -4,13 +4,7 @@
     "slug": "fe-seabottle",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./asset/icon.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./asset/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -18,13 +12,16 @@
       "supportsTablet": true
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./asset/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+      "package": "com.tien0246.feseabottle"
+    },
+    "web": {},
+    "extra": {
+      "eas": {
+        "projectId": "63046986-f3ec-4ed6-b0db-2cbeef76a255"
       }
     },
-    "web": {
-      "favicon": "./asset/favicon.png"
-    }
+    "plugins": [
+      "expo-secure-store"
+    ]
   }
 }
