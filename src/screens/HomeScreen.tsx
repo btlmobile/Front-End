@@ -93,12 +93,6 @@ export default function HomeScreen({ route, navigation }: Props) {
                 }}
                 title="Giới thiệu"
               />
-              <Menu.Item
-                onPress={() => {
-                  closeMenu();
-                }}
-                title="Lộ trình phát triển"
-              />
               <Divider />
               <Menu.Item
                 onPress={() => {
