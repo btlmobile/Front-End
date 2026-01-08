@@ -6,7 +6,7 @@ global.setImmediate = global.setImmediate || ((fn, ...args) => global.setTimeout
 global.__ExpoImportMetaRegistry = {
   register: () => {},
   get: () => null,
-};
+}; 
 
 global.structuredClone = global.structuredClone || ((obj) => JSON.parse(JSON.stringify(obj)));
 
