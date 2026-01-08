@@ -15,8 +15,6 @@ export default function ReadMessageScreen({ route, navigation }: Props) {
   const bottle = route.params?.bottle;
   const isGuest = route.params?.isGuest || false;
 
-  console.log('Received bottle:', bottle);
-
   const handleKeep = async () => {
     if (isGuest) {
       Alert.alert('Yêu cầu đăng nhập', 'Bạn cần đăng nhập để sử dụng chức năng này.');

@@ -74,7 +74,10 @@
       "text",
       "html"
     ],
-    "coverageDirectory": "coverage"
+    "coverageDirectory": "coverage",
+    "moduleNameMapper": {
+      "\\\\.(svg)$": "<rootDir>/jest/svgMock.js"
+    }
   },
   "private": true
 }

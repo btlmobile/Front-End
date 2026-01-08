@@ -15,6 +15,7 @@ jest.mock('./src/utils/scaling', () => ({
   scale: (size) => size,
   verticalScale: (size) => size,
   moderateScale: (size) => size,
+  fontScale: (size) => size,
 }));
 
 // Mock common styles
@@ -22,5 +23,76 @@ jest.mock('./src/styles/common', () => ({
   commonStyles: {
     container: { flex: 1 },
     background: { flex: 1 },
+  },
+}));
+
+jest.mock('react-native-safe-area-context', () => {
+  const React = require('react');
+  const inset = { top: 0, bottom: 0, left: 0, right: 0 };
+  const frame = { x: 0, y: 0, width: 0, height: 0 };
+  const SafeAreaInsetsContext = React.createContext(inset);
+  const SafeAreaFrameContext = React.createContext(frame);
+
+  return {
+    SafeAreaProvider: ({ children }) =>
+      React.createElement(
+        SafeAreaInsetsContext.Provider,
+        { value: inset },
+        React.createElement(SafeAreaFrameContext.Provider, { value: frame }, children)
+      ),
+    SafeAreaConsumer: ({ children }) => children(inset),
+    useSafeAreaInsets: () => React.useContext(SafeAreaInsetsContext),
+    useSafeAreaFrame: () => React.useContext(SafeAreaFrameContext),
+    SafeAreaInsetsContext,
+    SafeAreaFrameContext,
+    initialWindowMetrics: {
+      frame,
+      insets: inset,
+    },
+  };
+});
+
+jest.mock('react-native-paper', () => {
+  const React = require('react');
+  const actual = jest.requireActual('react-native-paper');
+
+  const Menu = ({ children }) => React.createElement(React.Fragment, null, children);
+  Menu.Item = ({ title, onPress }) =>
+    React.createElement('MenuItem', { title, onPress });
+
+  const IconButton = ({ onPress, ...props }) =>
+    React.createElement('IconButton', { onPress, ...props });
+
+  const Divider = () => React.createElement('Divider', null);
+
+  return {
+    ...actual,
+    IconButton,
+    Menu,
+    Divider,
+  };
+});
+
+jest.mock('react-native-svg', () => {
+  const React = require('react');
+  const { View } = require('react-native');
+  return {
+    Svg: (props) => React.createElement(View, props),
+    Path: (props) => React.createElement(View, props),
+  };
+});
+
+jest.mock('@sentry/react-native', () => ({
+  init: jest.fn(),
+  wrap: (App) => App,
+  feedbackIntegration: jest.fn(),
+  showFeedbackWidget: jest.fn(),
+  captureException: jest.fn(),
+  logger: {
+    log: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+    debug: jest.fn(),
   },
 }));

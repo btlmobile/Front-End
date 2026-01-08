@@ -66,7 +66,7 @@ describe('FoundBottleScreen', () => {
     const returnButton = getByText('Trở về');
     fireEvent.press(returnButton);
 
-    expect(mockNavigate).toHaveBeenCalledWith('Home');
+    expect(mockNavigate).toHaveBeenCalledWith('Home', { guest: false });
   });
 
   it('should navigate to ReadMessage when "Mở chai" button is pressed', () => {
@@ -77,7 +77,11 @@ describe('FoundBottleScreen', () => {
     const openButton = getByText('Mở chai');
     fireEvent.press(openButton);
 
-    expect(mockNavigate).toHaveBeenCalledWith('ReadMessage');
+    expect(mockNavigate).toHaveBeenCalledWith('ReadMessage', {
+      theme: 'light',
+      bottle: undefined,
+      isGuest: false,
+    });
   });
 
   it('should render container view', () => {
