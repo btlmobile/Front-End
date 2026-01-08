@@ -58,10 +58,30 @@ jest.mock('react-native-paper', () => {
 
   const Menu = ({ children }) => React.createElement(React.Fragment, null, children);
   Menu.Item = ({ title, onPress }) =>
-    React.createElement('MenuItem', { title, onPress });
+    React.createElement(
+      'MenuItem',
+      null,
+      React.createElement('Text', { onPress }, title)
+    );
 
-  const IconButton = ({ onPress, ...props }) =>
-    React.createElement('IconButton', { onPress, ...props });
+  const IconButton = ({ icon, onPress, ...props }) => {
+    let iconElement = null;
+    if (typeof icon === 'function') {
+      iconElement = icon({ size: props.size ?? 24, color: props.iconColor });
+    } else {
+      iconElement = icon ?? null;
+    }
+
+    return React.createElement('IconButton', { onPress, ...props }, iconElement);
+  };
+
+  const TextInput = ({ label, onChangeText, value, ...props }) =>
+    React.createElement('TextInput', {
+      accessibilityLabel: label,
+      onChangeText,
+      value,
+      ...props,
+    });
 
   const Divider = () => React.createElement('Divider', null);
 
@@ -69,6 +89,7 @@ jest.mock('react-native-paper', () => {
     ...actual,
     IconButton,
     Menu,
+    TextInput,
     Divider,
   };
 });

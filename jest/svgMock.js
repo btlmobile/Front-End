@@ -5,8 +5,7 @@ function SvgMock(props) {
   return React.createElement(View, props);
 }
 
-module.exports = {
-  __esModule: true,
-  default: SvgMock,
-  ReactComponent: SvgMock,
-};
+module.exports = SvgMock;
+module.exports.__esModule = true;
+module.exports.default = SvgMock;
+module.exports.ReactComponent = SvgMock;

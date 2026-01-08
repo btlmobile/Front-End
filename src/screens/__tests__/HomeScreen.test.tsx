@@ -1,8 +1,23 @@
 import React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react-native';
+import { render, fireEvent, screen, waitFor } from '@testing-library/react-native';
 import HomeScreen from '../HomeScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Alert } from 'react-native';
+import * as Sentry from '@sentry/react-native';
+
+jest.mock('../../../asset/image/account_icon.svg', () => {
+  const React = require('react');
+  return () => React.createElement('MockSvg');
+});
+jest.mock('../../../asset/image/balo_icon.svg', () => {
+  const React = require('react');
+  return () => React.createElement('MockSvg');
+});
+jest.mock('../../../asset/image/setting_icon.svg', () => {
+  const React = require('react');
+  return () => React.createElement('MockSvg');
+});
 
 const Stack = createNativeStackNavigator();
 
@@ -92,6 +107,107 @@ describe('HomeScreen', () => {
     fireEvent.press(walkButton);
 
     expect(mockNavigate).toHaveBeenCalledWith('Waiting', { theme: 'light', isGuest: false });
+  });
+
+  it('should navigate to Account when account icon is pressed', () => {
+    const { getByTestId } = render(
+      <HomeScreen navigation={mockNavigation as any} route={mockRoute} />
+    );
+
+    fireEvent.press(getByTestId('home-account-button'));
+
+    expect(mockNavigate).toHaveBeenCalledWith('Account', { theme: 'light', isGuest: false });
+  });
+
+  it('should navigate to Balo when balo icon is pressed', () => {
+    const { getByTestId } = render(
+      <HomeScreen navigation={mockNavigation as any} route={mockRoute} />
+    );
+
+    fireEvent.press(getByTestId('home-balo-button'));
+
+    expect(mockNavigate).toHaveBeenCalledWith('Balo', { theme: 'light', isGuest: false });
+  });
+
+  it('should prompt login when guest taps account icon', () => {
+    const alertSpy = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
+    const guestRoute = { ...mockRoute, params: { guest: true } };
+    const { getByTestId } = render(
+      <HomeScreen navigation={mockNavigation as any} route={guestRoute as any} />
+    );
+
+    fireEvent.press(getByTestId('home-account-button'));
+
+    expect(alertSpy).toHaveBeenCalledWith(
+      'Yêu cầu đăng nhập',
+      'Bạn cần đăng nhập để sử dụng chức năng này.',
+      expect.any(Array)
+    );
+    expect(mockNavigate).not.toHaveBeenCalled();
+    alertSpy.mockRestore();
+  });
+
+  it('should prompt login when guest taps balo icon', () => {
+    const alertSpy = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
+    const guestRoute = { ...mockRoute, params: { guest: true } };
+    const { getByTestId } = render(
+      <HomeScreen navigation={mockNavigation as any} route={guestRoute as any} />
+    );
+
+    fireEvent.press(getByTestId('home-balo-button'));
+
+    expect(alertSpy).toHaveBeenCalled();
+    alertSpy.mockRestore();
+  });
+
+  it('should navigate to Login from guest alert action', () => {
+    const alertSpy = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
+    const guestRoute = { ...mockRoute, params: { guest: true } };
+    const { getByTestId } = render(
+      <HomeScreen navigation={mockNavigation as any} route={guestRoute as any} />
+    );
+
+    fireEvent.press(getByTestId('home-account-button'));
+
+    const alertArgs = alertSpy.mock.calls[0];
+    const actions = alertArgs[2];
+    actions?.[0]?.onPress?.();
+
+    expect(mockNavigate).toHaveBeenCalledWith('Login');
+    alertSpy.mockRestore();
+  });
+
+  it('should open Sentry feedback widget from menu', () => {
+    const { getByText } = render(
+      <HomeScreen navigation={mockNavigation as any} route={mockRoute} />
+    );
+
+    fireEvent.press(getByText('Hỗ Trợ/Phản hồi'));
+
+    expect(Sentry.showFeedbackWidget).toHaveBeenCalled();
+  });
+
+  it('should toggle theme and open introduce screen', async () => {
+    const { getByText } = render(
+      <HomeScreen navigation={mockNavigation as any} route={mockRoute} />
+    );
+
+    fireEvent.press(getByText('Ngày/Đêm'));
+    fireEvent.press(getByText('Giới thiệu'));
+
+    await waitFor(() => {
+      expect(mockNavigate).toHaveBeenCalledWith('Introduce', { theme: 'dark' });
+    });
+  });
+
+  it('should navigate to Login when "Đăng xuất" is pressed', () => {
+    const { getByText } = render(
+      <HomeScreen navigation={mockNavigation as any} route={mockRoute} />
+    );
+
+    fireEvent.press(getByText('Đăng xuất'));
+
+    expect(mockNavigate).toHaveBeenCalledWith('Login');
   });
 
   it('should render background image', () => {

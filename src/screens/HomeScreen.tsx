@@ -81,6 +81,7 @@ export default function HomeScreen({ route, navigation }: Readonly<Props>) {
               icon={AccountSvgIcon}
               size={iconSize}
               onPress={handleAccountPress}
+              testID="home-account-button"
             />
           </View>
           <View style={styles.topRightIcons}>
@@ -88,6 +89,7 @@ export default function HomeScreen({ route, navigation }: Readonly<Props>) {
               icon={BaloSvgIcon}
               size={iconSize}
               onPress={handleBaloPress}
+              testID="home-balo-button"
             />
             <Menu
               visible={menuVisible}
@@ -97,6 +99,7 @@ export default function HomeScreen({ route, navigation }: Readonly<Props>) {
                   icon={SettingSvgIcon}
                   size={iconSize}
                   onPress={openMenu}
+                  testID="home-settings-button"
                 />
               }
             >
