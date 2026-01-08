@@ -20,7 +20,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 type ThemeMode = 'light' | 'dark';
 
-type SvgIconProps = { size: number; color: string };
+type SvgIconProps = { size: number };
 
 const AccountSvgIcon = ({ size }: SvgIconProps) => (
   <AccountIcon width={size} height={size} />
