@@ -10,7 +10,7 @@ import { getRandomBottle } from '../services/api';
 export default function WaitingScreen({
   route,
   navigation,
-}: NativeStackScreenProps<RootStackParamList, 'Waiting'>) {
+}: Readonly<NativeStackScreenProps<RootStackParamList, 'Waiting'>>) {
   const currentTheme = route.params?.theme || 'light';
   const isGuest = route.params?.isGuest || false;
 

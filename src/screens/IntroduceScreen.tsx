@@ -8,7 +8,7 @@ import { theme as appTheme } from '../themes/theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Introduce'>;
 
-export default function IntroduceScreen({ route, navigation }: Props) {
+export default function IntroduceScreen({ route, navigation }: Readonly<Props>) {
   const currentTheme = route.params?.theme || 'light';
   const { home_bg, text } = appTheme[currentTheme];
 

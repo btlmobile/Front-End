@@ -8,7 +8,7 @@ import { theme as appTheme } from '../themes/theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LoadingSend'>;
 
-export default function LoadingSendScreen({ route, navigation }: Props) {
+export default function LoadingSendScreen({ route, navigation }: Readonly<Props>) {
   const currentTheme = route.params?.theme || 'light';
 
   useFocusEffect(
@@ -38,4 +38,3 @@ export default function LoadingSendScreen({ route, navigation }: Props) {
     </View>
   );
 }
-

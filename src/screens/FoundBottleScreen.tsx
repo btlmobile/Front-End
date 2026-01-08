@@ -8,7 +8,7 @@ import { theme as appTheme } from '../themes/theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'FoundBottle'>;
 
-export default function FoundBottleScreen({ route, navigation }: Props) {
+export default function FoundBottleScreen({ route, navigation }: Readonly<Props>) {
   const currentTheme = route.params?.theme || 'light';
   const bottle = route.params?.bottle;
   const isGuest = route.params?.isGuest || false;

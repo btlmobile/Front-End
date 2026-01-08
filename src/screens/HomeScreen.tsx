@@ -20,7 +20,17 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 type ThemeMode = 'light' | 'dark';
 
-export default function HomeScreen({ route, navigation }: Props) {
+type SvgIconProps = { size: number; color: string };
+
+const AccountSvgIcon = ({ size }: SvgIconProps) => (
+  <AccountIcon width={size} height={size} />
+);
+const BaloSvgIcon = ({ size }: SvgIconProps) => <BaloIcon width={size} height={size} />;
+const SettingSvgIcon = ({ size }: SvgIconProps) => (
+  <SettingIcon width={size} height={size} />
+);
+
+export default function HomeScreen({ route, navigation }: Readonly<Props>) {
   const isGuest = route.params?.guest ?? false;
   const [currentTheme, setCurrentTheme] = useState<ThemeMode>('light');
   const [menuVisible, setMenuVisible] = useState(false);
@@ -42,6 +52,22 @@ export default function HomeScreen({ route, navigation }: Props) {
     );
   };
 
+  const handleAccountPress = () => {
+    if (isGuest) {
+      handleGuestAccess();
+      return;
+    }
+    navigation.navigate('Account', { theme: currentTheme, isGuest });
+  };
+
+  const handleBaloPress = () => {
+    if (isGuest) {
+      handleGuestAccess();
+      return;
+    }
+    navigation.navigate('Balo', { theme: currentTheme, isGuest });
+  };
+
   const { home_bg, titleColor, subtitleColor } = theme[currentTheme];
   const iconSize = 34;
 
@@ -52,29 +78,24 @@ export default function HomeScreen({ route, navigation }: Props) {
         <View style={styles.overlay}>
           <View style={styles.topLeftIcons}>
             <IconButton
-              icon={() => <AccountIcon width={iconSize} height={iconSize} />}
-              onPress={() =>
-                isGuest
-                  ? handleGuestAccess()
-                  : navigation.navigate('Account', { theme: currentTheme, isGuest })
-              }
+              icon={AccountSvgIcon}
+              size={iconSize}
+              onPress={handleAccountPress}
             />
           </View>
           <View style={styles.topRightIcons}>
             <IconButton
-              icon={() => <BaloIcon width={iconSize} height={iconSize} />}
-              onPress={() =>
-                isGuest
-                  ? handleGuestAccess()
-                  : navigation.navigate('Balo', { theme: currentTheme, isGuest })
-              }
+              icon={BaloSvgIcon}
+              size={iconSize}
+              onPress={handleBaloPress}
             />
             <Menu
               visible={menuVisible}
               onDismiss={closeMenu}
               anchor={
                 <IconButton
-                  icon={() => <SettingIcon width={iconSize} height={iconSize} />}
+                  icon={SettingSvgIcon}
+                  size={iconSize}
                   onPress={openMenu}
                 />
               }

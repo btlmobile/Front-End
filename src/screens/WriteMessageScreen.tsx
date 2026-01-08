@@ -10,7 +10,7 @@ import { createBottle, createAnonymousBottle } from '../services/api';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'WriteMessage'>;
 
-export default function WriteMessageScreen({ route, navigation }: Props) {
+export default function WriteMessageScreen({ route, navigation }: Readonly<Props>) {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [isAnonymous, setIsAnonymous] = useState(false);

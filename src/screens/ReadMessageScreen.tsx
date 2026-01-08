@@ -10,7 +10,7 @@ import { storeBottle } from '../services/api';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ReadMessage'>;
 
-export default function ReadMessageScreen({ route, navigation }: Props) {
+export default function ReadMessageScreen({ route, navigation }: Readonly<Props>) {
   const currentTheme = route.params?.theme || 'light';
   const bottle = route.params?.bottle;
   const isGuest = route.params?.isGuest || false;

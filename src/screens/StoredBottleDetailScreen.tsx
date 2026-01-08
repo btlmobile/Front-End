@@ -5,12 +5,11 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { styles } from './styles/StoredBottleDetailScreen.style';
 import { theme as appTheme } from '../themes/theme';
-import { getStoredBottle, deleteStoredBottle } from '../services/api';
-import { StoredBottleResponseSchema } from '../services/api';
+import { getStoredBottle, deleteStoredBottle, StoredBottleResponseSchema } from '../services/api';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'StoredBottleDetail'>;
 
-export default function StoredBottleDetailScreen({ route, navigation }: Props) {
+export default function StoredBottleDetailScreen({ route, navigation }: Readonly<Props>) {
   const currentTheme = route.params?.theme || 'light';
   const storedBottleId = route.params?.stored_bottle_id;
   const isGuest = route.params?.isGuest || false;
@@ -55,40 +54,48 @@ export default function StoredBottleDetailScreen({ route, navigation }: Props) {
     }
   };
 
+  let content: React.ReactNode;
+
+  if (loading) {
+    content = <ActivityIndicator />;
+  } else if (isGuest) {
+    content = (
+      <>
+        <Text style={[styles.messageText, { color: text }]}>
+          Bạn cần đăng nhập để xem chi tiết chai đã lưu.
+        </Text>
+        <PaperButton
+          mode="contained"
+          onPress={() => navigation.navigate('Login')}
+          style={styles.backButton}
+          labelStyle={styles.buttonLabel}
+        >
+          Đăng nhập
+        </PaperButton>
+      </>
+    );
+  } else if (storedBottle) {
+    content = (
+      <ScrollView style={styles.messageScrollView}>
+        <Text style={[styles.messageText, { color: text }]}>
+          {storedBottle.bottle.content}
+        </Text>
+        <Text style={[styles.creatorText, { color: text }]}>
+          - Creator: {storedBottle.bottle.creator || 'Anonymous'}
+        </Text>
+      </ScrollView>
+    );
+  } else {
+    content = <Text style={[styles.messageText, { color: text }]}>Không tìm thấy chai.</Text>;
+  }
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
       <ImageBackground source={home_bg} style={styles.background} resizeMode="cover">
         <View style={styles.overlay}>
           <View style={styles.contentBox}>
-            {loading ? (
-              <ActivityIndicator />
-            ) : isGuest ? (
-              <>
-                <Text style={[styles.messageText, { color: text }]}>
-                  Bạn cần đăng nhập để xem chi tiết chai đã lưu.
-                </Text>
-                <PaperButton
-                  mode="contained"
-                  onPress={() => navigation.navigate('Login')}
-                  style={styles.backButton} // Reusing backButton style for consistency
-                  labelStyle={styles.buttonLabel}
-                >
-                  Đăng nhập
-                </PaperButton>
-              </>
-            ) : storedBottle ? (
-              <ScrollView style={styles.messageScrollView}>
-                <Text style={[styles.messageText, { color: text }]}>
-                  {storedBottle.bottle.content}
-                </Text>
-                <Text style={[styles.creatorText, { color: text }]}>
-                  - Creator: {storedBottle.bottle.creator || 'Anonymous'}
-                </Text>
-              </ScrollView>
-            ) : (
-              <Text style={[styles.messageText, { color: text }]}>Không tìm thấy chai.</Text>
-            )}
+            {content}
             {!isGuest && (
               <View style={styles.buttonContainer}>
                 <PaperButton
@@ -104,7 +111,7 @@ export default function StoredBottleDetailScreen({ route, navigation }: Props) {
                   onPress={handleDelete}
                   style={styles.deleteButton}
                   labelStyle={styles.buttonLabel}
-                  color="red"
+                  buttonColor="red"
                 >
                   Xóa
                 </PaperButton>

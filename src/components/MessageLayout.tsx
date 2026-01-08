@@ -15,7 +15,7 @@ export default function MessageLayout({
   children,
   buttons,
   theme = 'light',
-}: MessageLayoutProps) {
+}: Readonly<MessageLayoutProps>) {
   const { read_bg, text } = appTheme[theme];
 
   return (
@@ -31,4 +31,3 @@ export default function MessageLayout({
     </View>
   );
 }
-

@@ -14,7 +14,7 @@ export const fontScale = (
   size: number,
   factor = 0.25,
   minScale = 0.6,
-  maxScale = 1.0
+  maxScale = 1
 ): number => {
   const scaled = size + (scale(size) - size) * factor;
   const min = size * minScale;

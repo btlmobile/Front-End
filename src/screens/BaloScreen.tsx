@@ -6,12 +6,11 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { styles } from './styles/BaloScreen.style';
 import { theme as appTheme } from '../themes/theme';
-import { getStoredBottles, deleteStoredBottle } from '../services/api';
-import { StoredBottleResponseSchema } from '../services/api';
+import { getStoredBottles, deleteStoredBottle, StoredBottleResponseSchema } from '../services/api';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Balo'>;
 
-export default function BaloScreen({ route, navigation }: Props) {
+export default function BaloScreen({ route, navigation }: Readonly<Props>) {
   const currentTheme = route.params?.theme || 'light';
   const isGuest = route.params?.isGuest || false;
   const { home_bg, text } = appTheme[currentTheme];
@@ -64,6 +63,27 @@ export default function BaloScreen({ route, navigation }: Props) {
     </PaperButton>
   );
 
+  let content: React.ReactNode;
+
+  if (loading) {
+    content = <Text style={{ color: text }}>Đang tải...</Text>;
+  } else if (bottles.length > 0) {
+    content = (
+      <FlatList
+        data={bottles}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id.toString()}
+        style={styles.list}
+      />
+    );
+  } else {
+    content = (
+      <Text style={[styles.emptyText, { color: text }]}>
+        Ba-lô của bạn hiện đang trống.
+      </Text>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
@@ -71,26 +91,13 @@ export default function BaloScreen({ route, navigation }: Props) {
         <View style={styles.overlay}>
           <View style={styles.contentBox}>
             <Text style={[styles.title, { color: text }]}>Ba-Lô lưu trữ</Text>
-            {loading ? (
-              <Text style={{ color: text }}>Đang tải...</Text>
-            ) : bottles.length > 0 ? (
-              <FlatList
-                data={bottles}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.id.toString()}
-                style={styles.list}
-              />
-            ) : (
-              <Text style={[styles.emptyText, { color: text }]}>
-                Ba-lô của bạn hiện đang trống.
-              </Text>
-            )}
+            {content}
           </View>
           <IconButton
             icon="arrow-left"
             style={styles.backButton}
             onPress={() => navigation.goBack()}
-            color={text}
+            iconColor={text}
             size={moderateScale(50)}
           />
         </View>
