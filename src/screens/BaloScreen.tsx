@@ -27,6 +27,7 @@ export default function BaloScreen({ route, navigation }: Props) {
       const response = await getStoredBottles();
       setBottles(response.data);
     } catch (error) {
+      console.log(error);
       Alert.alert('Lỗi', 'Không thể tải danh sách chai đã lưu.');
     } finally {
       setLoading(false);
@@ -42,6 +43,7 @@ export default function BaloScreen({ route, navigation }: Props) {
       await deleteStoredBottle(id);
       fetchBottles();
     } catch (error) {
+      console.log(error);
       Alert.alert('Lỗi', 'Không thể xóa chai.');
     }
   };

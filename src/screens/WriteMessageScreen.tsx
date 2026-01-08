@@ -33,6 +33,7 @@ export default function WriteMessageScreen({ route, navigation }: Props) {
       }
       navigation.navigate('LoadingSend', { theme: currentTheme });
     } catch (error) {
+      console.log(error);
       Alert.alert('Lỗi', 'Không thể gửi thông điệp.');
     } finally {
       setLoading(false);
@@ -43,7 +44,7 @@ export default function WriteMessageScreen({ route, navigation }: Props) {
     <>
       <PaperButton
         mode="contained"
-        onPress={() => navigation.navigate('Home')}
+        onPress={() => navigation.navigate('Home', { guest: isGuest })}
         style={styles.backButton}
         labelStyle={styles.buttonLabel}
         disabled={loading}

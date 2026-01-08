@@ -33,6 +33,7 @@ export default function StoredBottleDetailScreen({ route, navigation }: Props) {
         const response = await getStoredBottle(storedBottleId);
         setStoredBottle(response.data);
       } catch (error) {
+        console.log(error);
         Alert.alert('Lỗi', 'Không thể tải chi tiết chai đã lưu.');
         navigation.goBack();
       } finally {
@@ -49,6 +50,7 @@ export default function StoredBottleDetailScreen({ route, navigation }: Props) {
       Alert.alert('Thành công', 'Đã xóa chai đã lưu.');
       navigation.goBack();
     } catch (error) {
+      console.log(error);
       Alert.alert('Lỗi', 'Không thể xóa chai đã lưu.');
     }
   };

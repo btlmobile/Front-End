@@ -28,6 +28,7 @@ export default function AccountScreen({ route, navigation }: Props) {
         const response = await getUserInfo();
         setUser(response.data);
       } catch (error) {
+        console.log(error);
         Alert.alert('Lỗi', 'Không thể tải thông tin người dùng.');
       } finally {
         setLoading(false);

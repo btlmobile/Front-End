@@ -23,8 +23,9 @@ export default function LoginScreen({ navigation }: Props) {
       const { token } = response.data;
       await SecureStore.setItemAsync('token', token);
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      navigation.navigate('Home');
+      navigation.navigate('Home', { guest: false });
     } catch (error) {
+      console.log(error);
       Alert.alert('Lỗi', 'Tên đăng nhập hoặc mật khẩu không đúng.');
     } finally {
       setLoading(false);

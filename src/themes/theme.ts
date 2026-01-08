@@ -36,13 +36,12 @@ export const theme = {
   common: {
     // Component
     //--Button
-    primaryButton: '#0077B6',
-    secondaryButton: '#486273',
+    primaryButton: '#002AFF', // Updated from #0077B6
+    secondaryButton: '#130080', // Updated from #486273
+    buttonTextColor: '#FDF9F2',
     //--Icon
-    settingsIcon: require('../../asset/image/gear_icon.png'),
-    accountIcon: require('../../asset/image/account_icon.png'),
-    chatIcon: require('../../asset/image/chat_icon.png'),
-    baloIcon: require('../../asset/image/balo_icon.png'),
+    accountIcon: require('../../asset/image/account_icon.svg'),
+    baloIcon: require('../../asset/image/balo_icon.svg'),
     // Font
     fontWeight: 'bold',
   },
@@ -54,8 +53,8 @@ export const theme = {
   },
   fontSize: {
     s: 12,
-    m: 18,
-    l: 28,
-    xl: 40
+    m: 38, // Adjusted from 18 to aim for Figma's 50
+    l: 35, // Adjusted from 28 to aim for Figma's 48
+    xl: 60 // Adjusted from 40 to aim for Figma's 80
   },
 };

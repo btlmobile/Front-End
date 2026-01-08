@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { scale, verticalScale, moderateScale } from '../../utils/scaling';
+import { scale, verticalScale, fontScale } from '../../utils/scaling';
 import { theme } from '../../themes/theme';
 
 export const styles = StyleSheet.create({
@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: scale(40),
   },
   title: {
-    fontSize: moderateScale(theme.fontSize.xl),
+    fontSize: fontScale(theme.fontSize.xl),
     fontWeight: 'bold',
     color: theme.light.text,
     marginBottom: verticalScale(100),
@@ -42,14 +42,18 @@ export const styles = StyleSheet.create({
     paddingVertical: verticalScale(10),
   },
   registerButtonLabel: {
-    fontSize: moderateScale(theme.fontSize.m),
+    fontSize: fontScale(18),
+    lineHeight: fontScale(20),
+    textAlign: 'center',
     fontWeight: 'bold',
   },
   loginButton: {
     marginTop: verticalScale(20),
   },
   loginText: {
-    fontSize: moderateScale(theme.fontSize.m),
+    fontSize: fontScale(16),
+    lineHeight: fontScale(18),
+    textAlign: 'center',
     color: theme.light.text,
   },
 });

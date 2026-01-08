@@ -18,11 +18,16 @@ export default function ReadMessageScreen({ route, navigation }: Props) {
   console.log('Received bottle:', bottle);
 
   const handleKeep = async () => {
+    if (isGuest) {
+      Alert.alert('Yêu cầu đăng nhập', 'Bạn cần đăng nhập để sử dụng chức năng này.');
+      return;
+    }
     if (!bottle) return;
     try {
       await storeBottle({ bottle_id: bottle.id });
       Alert.alert('Đã lưu', 'Thông điệp đã được lưu vào bộ sưu tập của bạn.');
     } catch (error) {
+      console.log(error);
       Alert.alert('Lỗi', 'Không thể lưu thông điệp.');
     }
   };
@@ -31,7 +36,7 @@ export default function ReadMessageScreen({ route, navigation }: Props) {
     <>
       <PaperButton
         mode="contained"
-        onPress={() => navigation.navigate('Waiting', { theme: currentTheme })}
+        onPress={() => navigation.navigate('Waiting', { theme: currentTheme, isGuest })}
         style={styles.walkButton}
         labelStyle={styles.buttonLabel}
       >

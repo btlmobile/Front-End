@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { scale, verticalScale, moderateScale } from '../../utils/scaling';
+import { scale, verticalScale, fontScale } from '../../utils/scaling';
 import { commonStyles } from '../../styles/common';
 import { theme } from '../../themes/theme';
 
@@ -17,23 +17,32 @@ export const styles = StyleSheet.create({
   },
   contentBox: {
     width: scale(922),
-    height: verticalScale(1140),
+    maxHeight: verticalScale(1140),
     backgroundColor: 'rgba(217, 217, 217, 0.8)',
     borderRadius: scale(32),
-    justifyContent: 'center',
     alignItems: 'center',
-    padding: scale(40),
+    paddingHorizontal: scale(40),
+    paddingVertical: verticalScale(24),
+    flexShrink: 1,
+  },
+  contentScroll: {
+    alignItems: 'center',
+    paddingBottom: verticalScale(12),
+    width: '100%',
   },
   text: {
-    fontSize: moderateScale(theme.fontSize.m),
-    lineHeight: moderateScale(theme.fontSize.l),
+    fontSize: fontScale(theme.fontSize.m),
+    lineHeight: fontScale(theme.fontSize.m * 1.35),
     textAlign: 'center',
   },
   backButton: {
     marginTop: verticalScale(60),
+    paddingVertical: verticalScale(6),
+    paddingHorizontal: scale(24),
   },
   buttonText: {
-    fontSize: moderateScale(theme.fontSize.m),
+    fontSize: fontScale(theme.fontSize.s),
+    lineHeight: fontScale(theme.fontSize.s * 1.2),
     fontWeight: 'bold',
   },
 });

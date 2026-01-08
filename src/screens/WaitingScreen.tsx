@@ -25,8 +25,9 @@ export default function WaitingScreen({
             isGuest: isGuest,
           });
         } catch (error) {
+          console.log(error);
           Alert.alert('Lỗi', 'Không tìm thấy chai nào.', [
-            { text: 'OK', onPress: () => navigation.navigate('Home') },
+            { text: 'OK', onPress: () => navigation.navigate('Home', { guest: isGuest }) },
           ]);
         }
       };

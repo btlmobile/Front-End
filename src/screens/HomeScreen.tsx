@@ -4,26 +4,31 @@ import {
   Text,
   ImageBackground,
   StatusBar,
-  Image,
-  Modal,
-  Switch,
   Alert,
 } from 'react-native';
-import { Button as PaperButton, IconButton } from 'react-native-paper';
+import { Button as PaperButton, IconButton, Menu, Divider } from 'react-native-paper';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { styles } from './styles/HomeScreen.style';
 import { theme } from '../themes/theme';
+import AccountIcon from '../../asset/image/account_icon.svg';
+import BaloIcon from '../../asset/image/balo_icon.svg';
+import SettingIcon from '../../asset/image/setting_icon.svg';
+import * as Sentry from '@sentry/react-native';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
+type ThemeMode = 'light' | 'dark';
+
 export default function HomeScreen({ route, navigation }: Props) {
-  const isGuest = route.params?.guest || false;
-  const [currentTheme, setCurrentTheme] = useState('light');
-  const [modalVisible, setModalVisible] = useState(false);
+  const isGuest = route.params?.guest ?? false;
+  const [currentTheme, setCurrentTheme] = useState<ThemeMode>('light');
+  const [menuVisible, setMenuVisible] = useState(false);
+  const openMenu = () => setMenuVisible(true);
+  const closeMenu = () => setMenuVisible(false);
 
   const toggleTheme = () => {
-    setCurrentTheme(currentTheme === 'light' ? 'dark' : 'light');
+    setCurrentTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
   };
 
   const handleGuestAccess = () => {
@@ -38,125 +43,101 @@ export default function HomeScreen({ route, navigation }: Props) {
   };
 
   const { home_bg, titleColor, subtitleColor } = theme[currentTheme];
-  const { settingsIcon, accountIcon, chatIcon, baloIcon } = theme.common;
+  const iconSize = 34;
 
   return (
     <View style={styles.container} testID="home-screen-container">
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
       <ImageBackground source={home_bg} style={styles.background} resizeMode="cover">
         <View style={styles.overlay}>
-          <IconButton
-            icon={() => <Image source={accountIcon} style={styles.icon} />}
-            style={styles.accountIconContainer}
-            onPress={() =>
-              isGuest
-                ? handleGuestAccess()
-                : navigation.navigate('Account', { theme: currentTheme, isGuest: isGuest })
-            }
-          />
-          <IconButton
-            icon={() => <Image source={settingsIcon} style={styles.icon} />}
-            style={styles.settingsIconContainer}
-            onPress={() => setModalVisible(true)}
-          />
-          <IconButton
-            icon={() => <Image source={chatIcon} style={styles.icon} />}
-            style={styles.chatIconContainer}
-            onPress={() => {
-              console.log('Chat icon pressed');
-            }}
-          />
-          <IconButton
-            icon={() => <Image source={baloIcon} style={styles.icon} />}
-            style={styles.baloIconContainer}
-            onPress={() =>
-              isGuest ? handleGuestAccess() : navigation.navigate('Balo', { theme: currentTheme, isGuest: isGuest })
-            }
-          />
-
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
-              setModalVisible(!modalVisible);
-            }}
-          >
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
+          <View style={styles.topLeftIcons}>
+            <IconButton
+              icon={() => <AccountIcon width={iconSize} height={iconSize} />}
+              onPress={() =>
+                isGuest
+                  ? handleGuestAccess()
+                  : navigation.navigate('Account', { theme: currentTheme, isGuest })
+              }
+            />
+          </View>
+          <View style={styles.topRightIcons}>
+            <IconButton
+              icon={() => <BaloIcon width={iconSize} height={iconSize} />}
+              onPress={() =>
+                isGuest
+                  ? handleGuestAccess()
+                  : navigation.navigate('Balo', { theme: currentTheme, isGuest })
+              }
+            />
+            <Menu
+              visible={menuVisible}
+              onDismiss={closeMenu}
+              anchor={
                 <IconButton
-                  icon="close"
-                  style={styles.closeButton}
-                  onPress={() => setModalVisible(!modalVisible)}
+                  icon={() => <SettingIcon width={iconSize} height={iconSize} />}
+                  onPress={openMenu}
                 />
-                <View style={styles.modalOption}>
-                  <Text style={styles.modalText}>Ngày/Đêm</Text>
-                  <Switch
-                    trackColor={{ false: '#767577', true: '#81b0ff' }}
-                    thumbColor={currentTheme === 'dark' ? '#f5dd4b' : '#f4f3f4'}
-                    ios_backgroundColor="#3e3e3e"
-                    onValueChange={toggleTheme}
-                    value={currentTheme === 'dark'}
-                  />
-                </View>
-                <PaperButton
-                  style={styles.modalOption}
+              }
+            >
+              <Menu.Item
+                onPress={() => {
+                  toggleTheme();
+                  closeMenu();
+                }}
+                title="Ngày/Đêm"
+              />
+              <Menu.Item
+                onPress={() => {
+                  navigation.navigate('Introduce', { theme: currentTheme });
+                  closeMenu();
+                }}
+                title="Giới thiệu"
+              />
+              <Menu.Item
+                onPress={() => {
+                  closeMenu();
+                }}
+                title="Lộ trình phát triển"
+              />
+              <Divider />
+              <Menu.Item
+                onPress={() => {
+                  Sentry.showFeedbackWidget();
+                  closeMenu();
+                }}
+                title="Hỗ Trợ/Phản hồi"
+              />
+              {!isGuest && (
+                <Menu.Item
                   onPress={() => {
-                    setModalVisible(false);
-                    navigation.navigate('Introduce', { theme: currentTheme });
+                    navigation.navigate('Login');
+                    closeMenu();
                   }}
-                >
-                  <Text style={styles.modalText}>Giới thiệu</Text>
-                </PaperButton>
-                <PaperButton style={styles.modalOption}>
-                  <Text style={styles.modalText}>Lộ trình phát triển</Text>
-                </PaperButton>
-                <PaperButton
-                  style={styles.modalOption}
-                  onPress={() => {
-                    setModalVisible(false);
-                    navigation.navigate('Support', { theme: currentTheme });
-                  }}
-                >
-                  <Text style={styles.modalText}>Hỗ Trợ/Phản hồi</Text>
-                </PaperButton>
-                {!isGuest && (
-                  <PaperButton
-                    style={styles.modalOption}
-                    onPress={() => {
-                      setModalVisible(false);
-                      navigation.navigate('Login');
-                    }}
-                  >
-                    <Text style={styles.modalText}>Đăng xuất</Text>
-                  </PaperButton>
-                )}
-              </View>
-            </View>
-          </Modal>
+                  title="Đăng xuất"
+                />
+              )}
+            </Menu>
+          </View>
 
           <View style={styles.contentContainer}>
             <Text style={[styles.title, { color: titleColor }]}>Thông Điệp Trong Chai</Text>
-
             <View style={styles.centerContent}>
               <Text style={[styles.subtitle, { color: subtitleColor }]}>
                 Viết ra lời tâm sự, thả theo sóng biển
               </Text>
-
               <PaperButton
                 mode="contained"
                 onPress={() =>
-                  navigation.navigate('WriteMessage', { theme: currentTheme, isGuest: isGuest })
+                  navigation.navigate('WriteMessage', { theme: currentTheme, isGuest })
                 }
                 style={styles.primaryButton}
                 labelStyle={styles.buttonLabel}
               >
                 Viết thư
               </PaperButton>
-
               <PaperButton
                 mode="contained"
-                onPress={() => navigation.navigate('Waiting', { theme: currentTheme, isGuest: isGuest })}
+                onPress={() => navigation.navigate('Waiting', { theme: currentTheme, isGuest })}
                 style={styles.secondaryButton}
                 labelStyle={styles.buttonLabel}
               >

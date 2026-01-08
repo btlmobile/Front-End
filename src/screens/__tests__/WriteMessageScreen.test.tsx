@@ -1,10 +1,12 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
-import { Alert } from 'react-native';
 import WriteMessageScreen from '../WriteMessageScreen';
+import { createBottle, createAnonymousBottle } from '../../services/api';
 
-// Mock Alert
-jest.spyOn(Alert, 'alert');
+jest.mock('../../services/api', () => ({
+  createBottle: jest.fn().mockResolvedValue({}),
+  createAnonymousBottle: jest.fn().mockResolvedValue({}),
+}));
 
 const mockNavigate = jest.fn();
 const mockNavigation = {
@@ -24,8 +26,11 @@ const mockNavigation = {
 const mockRoute = {
   key: 'test',
   name: 'WriteMessage' as const,
-  params: undefined,
+  params: { theme: 'light', isGuest: false },
 };
+
+const mockedCreateBottle = createBottle as jest.Mock;
+const mockedCreateAnonymousBottle = createAnonymousBottle as jest.Mock;
 
 describe('WriteMessageScreen', () => {
   beforeEach(() => {
@@ -79,10 +84,10 @@ describe('WriteMessageScreen', () => {
     const backButton = getByText('Quay lại');
     fireEvent.press(backButton);
 
-    expect(mockNavigate).toHaveBeenCalledWith('Home');
+    expect(mockNavigate).toHaveBeenCalledWith('Home', { guest: false });
   });
 
-  it('should show alert when "Gửi" button is pressed', () => {
+  it('should navigate to LoadingSend when "Gửi" button is pressed', async () => {
     const { getByText, getByPlaceholderText } = render(
       <WriteMessageScreen navigation={mockNavigation} route={mockRoute} />
     );
@@ -95,28 +100,33 @@ describe('WriteMessageScreen', () => {
     const sendButton = getByText('Gửi');
     fireEvent.press(sendButton);
 
-    // Check alert was called
-    expect(Alert.alert).toHaveBeenCalledWith(
-      'Đã gửi',
-      'Thông điệp của bạn đã được thả trôi theo biển.',
-      expect.any(Array)
-    );
+    await waitFor(() => {
+      expect(mockedCreateBottle).toHaveBeenCalledWith({ content: 'My test message', type: 'text' });
+      expect(mockNavigate).toHaveBeenCalledWith('LoadingSend', { theme: 'light' });
+    });
   });
 
-  it('should navigate to Home after confirming alert', () => {
-    const { getByText } = render(
-      <WriteMessageScreen navigation={mockNavigation} route={mockRoute} />
+  it('should send anonymously when guest mode is enabled', async () => {
+    const guestRoute = {
+      key: 'test',
+      name: 'WriteMessage' as const,
+      params: { theme: 'light', isGuest: true },
+    };
+
+    const { getByText, getByPlaceholderText } = render(
+      <WriteMessageScreen navigation={mockNavigation} route={guestRoute} />
     );
+
+    const textInput = getByPlaceholderText('Viết điều bạn muốn nói...');
+    fireEvent.changeText(textInput, 'My test message');
 
     const sendButton = getByText('Gửi');
     fireEvent.press(sendButton);
 
-    // Get the alert callback and execute it
-    const alertCall = (Alert.alert as jest.Mock).mock.calls[0];
-    const okButton = alertCall[2][0]; // First button in array
-    okButton.onPress();
-
-    expect(mockNavigate).toHaveBeenCalledWith('Home');
+    await waitFor(() => {
+      expect(mockedCreateAnonymousBottle).toHaveBeenCalledWith({ content: 'My test message', type: 'text' });
+      expect(mockNavigate).toHaveBeenCalledWith('LoadingSend', { theme: 'light' });
+    });
   });
 
   it('should allow multiline text input', () => {

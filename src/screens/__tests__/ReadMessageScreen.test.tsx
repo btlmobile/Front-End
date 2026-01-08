@@ -1,7 +1,11 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
+import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import { Alert } from 'react-native';
 import ReadMessageScreen from '../ReadMessageScreen';
+
+jest.mock('../../services/api', () => ({
+  storeBottle: jest.fn().mockResolvedValue({}),
+}));
 
 // Mock Alert
 jest.spyOn(Alert, 'alert');
@@ -21,10 +25,17 @@ const mockNavigation = {
   removeListener: jest.fn(),
 } as any;
 
+const mockBottle = {
+  id: 'bottle-1',
+  type: 'text',
+  content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  creator: 'tester',
+};
+
 const mockRoute = {
   key: 'test',
   name: 'ReadMessage' as const,
-  params: undefined,
+  params: { theme: 'light', bottle: mockBottle, isGuest: false },
 };
 
 describe('ReadMessageScreen', () => {
@@ -64,7 +75,6 @@ describe('ReadMessageScreen', () => {
     const { getByText } = render(
       <ReadMessageScreen navigation={mockNavigation} route={mockRoute} />
     );
-    // Check for part of the dummy message
     expect(getByText(/Lorem ipsum dolor sit amet/)).toBeTruthy();
   });
 
@@ -76,10 +86,10 @@ describe('ReadMessageScreen', () => {
     const walkButton = getByText('Dạo biển');
     fireEvent.press(walkButton);
 
-    expect(mockNavigate).toHaveBeenCalledWith('Waiting');
+    expect(mockNavigate).toHaveBeenCalledWith('Waiting', { theme: 'light', isGuest: false });
   });
 
-  it('should show alert when "Lưu giữ" button is pressed', () => {
+  it('should show alert when "Lưu giữ" button is pressed', async () => {
     const { getByText } = render(
       <ReadMessageScreen navigation={mockNavigation} route={mockRoute} />
     );
@@ -87,10 +97,12 @@ describe('ReadMessageScreen', () => {
     const keepButton = getByText('Lưu giữ');
     fireEvent.press(keepButton);
 
-    expect(Alert.alert).toHaveBeenCalledWith(
-      'Đã lưu',
-      'Thông điệp đã được lưu vào bộ sưu tập của bạn.'
-    );
+    await waitFor(() => {
+      expect(Alert.alert).toHaveBeenCalledWith(
+        'Đã lưu',
+        'Thông điệp đã được lưu vào bộ sưu tập của bạn.'
+      );
+    });
   });
 
   it('should render message container', () => {

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { scale, verticalScale, moderateScale } from '../../utils/scaling';
+import { scale, verticalScale, fontScale } from '../../utils/scaling';
 import { commonStyles } from '../../styles/common';
 import { theme } from '../../themes/theme';
 
@@ -24,13 +24,13 @@ export const styles = StyleSheet.create({
     padding: scale(40),
   },
   title: {
-    fontSize: moderateScale(theme.fontSize.l),
+    fontSize: fontScale(theme.fontSize.l),
     fontWeight: 'bold',
     marginTop: verticalScale(40),
     marginBottom: verticalScale(80),
   },
   emptyText: {
-    fontSize: moderateScale(theme.fontSize.m),
+    fontSize: fontScale(theme.fontSize.m),
     textAlign: 'center',
   },
   backButton: {
@@ -52,12 +52,11 @@ export const styles = StyleSheet.create({
   },
   bottleMessage: {
     flex: 1,
-    fontSize: moderateScale(theme.fontSize.s),
+    fontSize: fontScale(theme.fontSize.s),
     marginRight: scale(10),
   },
   bottleActions: {
     flexDirection: 'row',
   },
 });
-
 

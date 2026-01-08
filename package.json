@@ -13,8 +13,11 @@
     "test:coverage": "jest --coverage --watchAll=false"
   },
   "dependencies": {
+    "@expo/vector-icons": "~14.0.4",
+    "@react-native-vector-icons/material-design-icons": "^12.4.0",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
+    "@sentry/react-native": "^7.8.0",
     "@testing-library/react-native": "^13.3.3",
     "@types/jest": "^30.0.0",
     "axios": "^1.13.2",
@@ -30,12 +33,14 @@
     "react-native-dotenv": "^3.4.11",
     "react-native-paper": "^5.14.5",
     "react-native-safe-area-context": "^4.12.0",
-    "react-native-screens": "~4.4.0"
+    "react-native-screens": "~4.4.0",
+    "react-native-svg": "^15.15.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@testing-library/jest-native": "^5.4.3",
     "@types/react": "~18.3.12",
+    "react-native-svg-transformer": "^1.5.2",
     "react-test-renderer": "^18.3.1",
     "typescript": "^5.3.3"
   },

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { scale, verticalScale, moderateScale } from '../../utils/scaling';
+import { scale, verticalScale, fontScale } from '../../utils/scaling';
 import { theme } from '../../themes/theme';
 
 export const styles = StyleSheet.create({
@@ -17,48 +17,51 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loginBox: {
-    width: scale(821),
-    height: verticalScale(1000),
+    width: '80%',
+    maxWidth: 500,
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    borderRadius: scale(64),
+    borderRadius: scale(20),
     alignItems: 'center',
-    paddingTop: verticalScale(40),
-    paddingHorizontal: scale(40),
+    padding: scale(20),
   },
   title: {
-    fontSize: moderateScale(theme.fontSize.xl),
+    fontSize: fontScale(30),
     fontWeight: 'bold',
     color: theme.light.text,
-    marginBottom: verticalScale(60),
+    marginBottom: verticalScale(30),
   },
   input: {
     width: '100%',
-    marginBottom: verticalScale(20),
+    marginBottom: verticalScale(15),
     backgroundColor: 'transparent',
   },
   loginButton: {
     width: '80%',
-    marginTop: verticalScale(40),
-    paddingVertical: verticalScale(5),
+    marginTop: verticalScale(20),
+    paddingVertical: verticalScale(2),
   },
   loginButtonLabel: {
-    fontSize: moderateScale(theme.fontSize.m),
+    fontSize: fontScale(18),
+    lineHeight: fontScale(20),
+    textAlign: 'center',
     fontWeight: 'bold',
   },
   registerButton: {
-    marginTop: verticalScale(15),
+    marginTop: verticalScale(10),
   },
   registerText: {
-    fontSize: moderateScale(theme.fontSize.m),
+    fontSize: fontScale(16),
+    lineHeight: fontScale(18),
+    textAlign: 'center',
     color: theme.light.text,
   },
   guestButton: {
-    marginTop: verticalScale(15),
+    marginTop: verticalScale(10),
   },
   guestText: {
-    fontSize: moderateScale(theme.fontSize.m),
+    fontSize: fontScale(14),
+    lineHeight: fontScale(16),
+    textAlign: 'center',
     color: theme.light.text,
   },
 });
-
-

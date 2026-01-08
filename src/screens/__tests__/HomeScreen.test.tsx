@@ -80,7 +80,7 @@ describe('HomeScreen', () => {
     const writeButton = getByText('Viết thư');
     fireEvent.press(writeButton);
 
-    expect(mockNavigate).toHaveBeenCalledWith('WriteMessage');
+    expect(mockNavigate).toHaveBeenCalledWith('WriteMessage', { theme: 'light', isGuest: false });
   });
 
   it('should navigate to Waiting screen when "Dạo biển" is pressed', () => {
@@ -91,7 +91,7 @@ describe('HomeScreen', () => {
     const walkButton = getByText('Dạo biển');
     fireEvent.press(walkButton);
 
-    expect(mockNavigate).toHaveBeenCalledWith('Waiting');
+    expect(mockNavigate).toHaveBeenCalledWith('Waiting', { theme: 'light', isGuest: false });
   });
 
   it('should render background image', () => {

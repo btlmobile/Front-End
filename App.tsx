@@ -11,16 +11,36 @@ import LoadingSendScreen from './src/screens/LoadingSendScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import RegisterScreen from './src/screens/RegisterScreen';
 import IntroduceScreen from './src/screens/IntroduceScreen';
-import SupportScreen from './src/screens/SupportScreen';
 import AccountScreen from './src/screens/AccountScreen';
 import BaloScreen from './src/screens/BaloScreen';
 import StoredBottleDetailScreen from './src/screens/StoredBottleDetailScreen';
 import { RootStackParamList } from './src/navigation/types';
 import { paperTheme } from './src/themes/paperTheme';
+import * as Sentry from '@sentry/react-native';
+
+Sentry.init({
+  dsn: 'https://d9f580b4edd55a922a8d3cbde5e7c7bb@o4510502309134336.ingest.us.sentry.io/4510502314770432',
+
+  // Adds more context data to events (IP address, cookies, user, etc.)
+  // For more information, visit: https://docs.sentry.io/platforms/react-native/data-management/data-collected/
+  sendDefaultPii: true,
+
+  // Enable Sentry in development for Expo
+  enableInExpoDevelopment: true,
+
+  environment: __DEV__ ? 'development' : 'production',
+
+  // Enable Logs
+  enableLogs: true,
+  integrations: [Sentry.feedbackIntegration()],
+
+  // uncomment the line below to enable Spotlight (https://spotlightjs.com)
+  // spotlight: __DEV__,
+});
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-export default function App() {
+export default Sentry.wrap(function App() {
   return (
     <PaperProvider theme={paperTheme}>
       <NavigationContainer>
@@ -39,7 +59,6 @@ export default function App() {
           <Stack.Screen name="ReadMessage" component={ReadMessageScreen} />
           <Stack.Screen name="LoadingSend" component={LoadingSendScreen} />
           <Stack.Screen name="Introduce" component={IntroduceScreen} />
-          <Stack.Screen name="Support" component={SupportScreen} />
           <Stack.Screen name="Account" component={AccountScreen} />
           <Stack.Screen name="Balo" component={BaloScreen} />
           <Stack.Screen name="StoredBottleDetail" component={StoredBottleDetailScreen} />
@@ -47,4 +66,4 @@ export default function App() {
       </NavigationContainer>
     </PaperProvider>
   );
-}
+});

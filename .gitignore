@@ -9,6 +9,7 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+*.aab
 
 # Environment variables
 .env
@@ -33,3 +34,7 @@ web-build/
 # Testing
 coverage/
 *.log
+
+.env.local
+
+.env.local

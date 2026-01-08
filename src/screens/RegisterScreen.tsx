@@ -35,6 +35,7 @@ export default function RegisterScreen({ navigation }: Props) {
         { text: 'OK', onPress: () => navigation.navigate('Login') },
       ]);
     } catch (error) {
+      console.log(error);
       Alert.alert('Lỗi', 'Đăng ký tài khoản thất bại.');
     } finally {
       setLoading(false);

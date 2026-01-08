@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { scale, verticalScale, moderateScale } from '../../utils/scaling';
+import { scale, verticalScale, moderateScale, fontScale } from '../../utils/scaling';
 import { commonStyles } from '../../styles/common';
 import { theme } from '../../themes/theme';
 
@@ -22,31 +22,23 @@ export const styles = StyleSheet.create({
     width: '100%',
   },
   icon: {
-    width: scale(60),
-    height: verticalScale(60),
+    width: moderateScale(50),
+    height: moderateScale(50),
   },
-  accountIconContainer: {
+  topLeftIcons: {
     position: 'absolute',
-    top: verticalScale(40),
-    left: scale(15),
+    top: verticalScale(50),
+    left: scale(20),
+    flexDirection: 'row',
   },
-  settingsIconContainer: {
+  topRightIcons: {
     position: 'absolute',
-    top: verticalScale(40),
-    right: scale(15),
-  },
-  chatIconContainer: {
-    position: 'absolute',
-    bottom: verticalScale(40),
-    left: scale(15),
-  },
-  baloIconContainer: {
-    position: 'absolute',
-    bottom: verticalScale(40),
-    right: scale(15),
+    top: verticalScale(50),
+    right: scale(20),
+    flexDirection: 'row',
   },
   title: {
-    fontSize: moderateScale(theme.fontSize.xl),
+    fontSize: fontScale(40),
     fontWeight: 'bold',
     textAlign: 'center',
     textShadowColor: 'rgba(0, 0, 0, 0.7)',
@@ -60,7 +52,7 @@ export const styles = StyleSheet.create({
     marginTop: verticalScale(100),
   },
   subtitle: {
-    fontSize: moderateScale(theme.fontSize.l),
+    fontSize: fontScale(24),
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: verticalScale(80),
@@ -70,51 +62,22 @@ export const styles = StyleSheet.create({
   },
   primaryButton: {
     marginBottom: verticalScale(40),
-    width: scale(400),
+    width: scale(246), // Adjusted width
+    paddingVertical: verticalScale(24), // Adjusted padding
+    backgroundColor: theme.common.primaryButton,
   },
   secondaryButton: {
-    width: scale(400),
+    width: scale(326), // Adjusted width
+    paddingVertical: verticalScale(24), // Adjusted padding
+    backgroundColor: theme.common.secondaryButton,
   },
   buttonLabel: {
-    fontSize: moderateScale(theme.fontSize.m),
+    fontSize: fontScale(18),
+    lineHeight: fontScale(20),
+    textAlign: 'center',
     fontWeight: 'bold',
+    color: theme.common.buttonTextColor, // Updated text color
     paddingVertical: verticalScale(8),
   },
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  closeButton: {
-    position: 'absolute',
-    top: 10,
-    right: 10,
-  },
-  modalOption: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-    paddingVertical: 5,
-  },
-  modalText: {
-    fontSize: 18,
-  },
-});
 
+});

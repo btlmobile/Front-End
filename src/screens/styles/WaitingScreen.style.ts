@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { verticalScale, moderateScale } from '../../utils/scaling';
+import { verticalScale, fontScale } from '../../utils/scaling';
 import { commonStyles } from '../../styles/common';
 import { theme } from '../../themes/theme';
 
@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: moderateScale(theme.fontSize.xl),
+    fontSize: fontScale(theme.fontSize.xl),
     fontWeight: 'bold',
     textAlign: 'center',
     textShadowColor: 'rgba(0, 0, 0, 0.7)',

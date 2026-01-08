@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { verticalScale, moderateScale } from '../../utils/scaling';
+import { verticalScale, fontScale } from '../../utils/scaling';
 import { commonStyles } from '../../styles/common';
 import { theme } from '../../themes/theme';
 
@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
     top: verticalScale(693),
   },
   text: {
-    fontSize: moderateScale(theme.fontSize.l),
+    fontSize: fontScale(theme.fontSize.l),
     fontWeight: 'bold',
     textAlign: 'center',
     position: 'absolute',

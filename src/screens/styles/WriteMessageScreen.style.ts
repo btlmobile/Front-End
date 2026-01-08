@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { scale, verticalScale, moderateScale } from '../../utils/scaling';
+import { scale, verticalScale, fontScale } from '../../utils/scaling';
 import { theme } from '../../themes/theme';
 
 export const styles = StyleSheet.create({
@@ -9,8 +9,8 @@ export const styles = StyleSheet.create({
     height: verticalScale(1000), // Reduced height
     textAlignVertical: 'top',
     padding: verticalScale(10),
-    fontSize: moderateScale(theme.fontSize.m),
-    lineHeight: moderateScale(theme.fontSize.l),
+    fontSize: fontScale(theme.fontSize.m),
+    lineHeight: fontScale(theme.fontSize.m * 1.35),
     marginTop: 0,
     marginBottom: verticalScale(20), // Added margin bottom
   },
@@ -21,7 +21,9 @@ export const styles = StyleSheet.create({
     borderRadius: scale(30),
   },
   buttonLabel: {
-    fontSize: moderateScale(theme.fontSize.m),
+    fontSize: fontScale(18),
+    lineHeight: fontScale(20),
+    textAlign: 'center',
     fontWeight: 'bold',
     paddingVertical: verticalScale(8),
   },
@@ -32,7 +34,7 @@ export const styles = StyleSheet.create({
     marginTop: verticalScale(5), // Reduced marginTop
   },
   anonymousToggleText: {
-    fontSize: moderateScale(theme.fontSize.m),
+    fontSize: fontScale(theme.fontSize.m),
     marginRight: scale(10),
   },
 });

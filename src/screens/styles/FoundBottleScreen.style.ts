@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { scale, verticalScale, moderateScale } from '../../utils/scaling';
+import { scale, verticalScale, fontScale } from '../../utils/scaling';
 import { commonStyles } from '../../styles/common';
 import { theme } from '../../themes/theme';
 
@@ -33,7 +33,7 @@ export const styles = StyleSheet.create({
     borderRadius: scale(20),
   },
   messageText: {
-    fontSize: moderateScale(theme.fontSize.m),
+    fontSize: fontScale(theme.fontSize.m),
     textAlign: 'center',
     marginBottom: verticalScale(40),
   },
@@ -50,7 +50,9 @@ export const styles = StyleSheet.create({
     borderRadius: scale(25),
   },
   buttonLabel: {
-    fontSize: moderateScale(theme.fontSize.m),
+    fontSize: fontScale(18),
+    lineHeight: fontScale(20),
+    textAlign: 'center',
     fontWeight: 'bold',
     paddingVertical: verticalScale(8),
   },
