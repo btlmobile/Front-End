@@ -1,4 +1,5 @@
 import axios from 'axios';
+import storage from '../utils/storage';
 
 const API_URL = 'https://unsatiating-clustered-phoenix.ngrok-free.dev';
 
@@ -7,6 +8,16 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+});
+
+api.interceptors.request.use(async (config) => {
+  const token = await storage.getItem('token');
+  if (token && config.headers) {
+    (config.headers as any).Authorization = `Bearer ${token}`;
+  }
+  console.log(`API Request: ${config.method?.toUpperCase()} ${config.baseURL}${config.url}`);
+  console.log('Token sent:', config.headers?.Authorization ? 'Yes' : 'No');
+  return config;
 });
 
 export interface AuthRegisterRequest {
@@ -48,6 +59,19 @@ export interface StoredBottleResponseSchema {
 export interface UserResponseSchema {
   username: string;
   // Add other user properties as needed based on API documentation
+}
+
+export interface GlobalChatMessage {
+  id?: string | number;
+  content?: string;
+  creator?: string;
+  username?: string;
+  created_at?: string;
+  createdAt?: string;
+  time?: string;
+  user?: {
+    username?: string;
+  };
 }
 
 export const register = (data: AuthRegisterRequest) => {
@@ -94,5 +118,22 @@ export const getUserInfo = () => {
   return api.get<UserResponseSchema>('/api/me');
 };
 
+export const getGlobalChat = (limit = 50) => {
+  return api.get<GlobalChatMessage[]>('/chat/global', { params: { limit } });
+};
+
+export const sendGlobalChat = (content: string) => {
+  return api.post('/chat/global', { content });
+};
+
 export default api;
+
+export interface ReportBottleRequest {
+  bottle_id: string;
+  reason: string;
+}
+
+export const reportBottle = (data: ReportBottleRequest) => {
+  return api.post('/report/bottle', data);
+};
 

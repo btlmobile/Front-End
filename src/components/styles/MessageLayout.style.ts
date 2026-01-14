@@ -30,12 +30,18 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     width: '90%',
     position: 'absolute',
-    bottom: verticalScale(50),
+    bottom: verticalScale(90),
   },
   buttonText: {
     fontSize: fontScale(18),
     lineHeight: fontScale(20),
     textAlign: 'center',
     fontWeight: 'bold',
+  },
+  headerRight: {
+    position: 'absolute',
+    top: verticalScale(220),
+    right: scale(24),
+    zIndex: 10,
   },
 });

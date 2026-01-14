@@ -12,7 +12,7 @@ export const theme = {
     letter_bg: require('../../asset/image/letter_background.png'),
     // Màn đọc thư
     read_bg: require('../../asset/image/read_bg.png'),
-    // Màn chai lọ ở biển
+    //Màn chai lọ ở biển
     bottle_on_sand: require('../../asset/image/bottle_on_the_sand_night.png'),
     bottle_at_the_sea: require('../../asset/image/bottle_at_the_sea_morning.png'),
   },
@@ -39,9 +39,15 @@ export const theme = {
     primaryButton: '#002AFF', // Updated from #0077B6
     secondaryButton: '#130080', // Updated from #486273
     buttonTextColor: '#FDF9F2',
+    buttonGradients: {
+      primary: ['#7B68EE', '#5B4DBE'], // Viết thư - Purple gradient
+      secondary: ['#5B4DBE', '#3D2D8E'], // Dạo biển - Darker purple gradient
+    },
     //--Icon
     accountIcon: require('../../asset/image/account_icon.svg'),
     baloIcon: require('../../asset/image/balo_icon.svg'),
+    iconBackground: 'rgba(255, 255, 255, 0.3)',
+    iconBackgroundDark: 'rgba(0, 0, 0, 0.3)',
     // Font
     fontWeight: 'bold',
   },

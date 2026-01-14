@@ -29,13 +29,17 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     top: verticalScale(50),
     left: scale(20),
-    flexDirection: 'row',
+    flexDirection: 'column', // Changed from 'row' to stack vertically
+    gap: verticalScale(16), // Spacing between icons
+    marginTop: '20%',
   },
   topRightIcons: {
     position: 'absolute',
     top: verticalScale(50),
     right: scale(20),
-    flexDirection: 'row',
+    flexDirection: 'column', // Changed from 'row' to stack vertically
+    gap: verticalScale(16), // Spacing between icons
+    marginTop: '20%',
   },
   title: {
     fontSize: fontScale(40),
@@ -60,24 +64,41 @@ export const styles = StyleSheet.create({
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 4,
   },
+  iconContainer: {
+    width: moderateScale(56),
+    height: moderateScale(56),
+    borderRadius: moderateScale(14),
+    justifyContent: 'center',
+    alignItems: 'center',
+    // backgroundColor set inline based on theme
+  },
   primaryButton: {
-    marginBottom: verticalScale(40),
-    width: scale(246), // Adjusted width
-    paddingVertical: verticalScale(24), // Adjusted padding
-    backgroundColor: theme.common.primaryButton,
+    marginBottom: verticalScale(20),
+    minWidth: scale(180), // Minimum width for aesthetics
+    maxWidth: scale(320), // Maximum width for responsiveness
+    alignSelf: 'center', // Center the button
+    borderRadius: moderateScale(28), // Pill shape
+    overflow: 'hidden', // For gradient
   },
   secondaryButton: {
-    width: scale(326), // Adjusted width
-    paddingVertical: verticalScale(24), // Adjusted padding
-    backgroundColor: theme.common.secondaryButton,
+    minWidth: scale(180), // Minimum width for aesthetics
+    maxWidth: scale(320), // Maximum width for responsiveness
+    alignSelf: 'center', // Center the button
+    borderRadius: moderateScale(28), // Pill shape
+    overflow: 'hidden', // For gradient
+  },
+  gradientButtonInner: {
+    backgroundColor: 'transparent',
+    width: '100%',
   },
   buttonLabel: {
     fontSize: fontScale(18),
-    lineHeight: fontScale(20),
+    lineHeight: fontScale(22),
     textAlign: 'center',
     fontWeight: 'bold',
     color: theme.common.buttonTextColor, // Updated text color
-    paddingVertical: verticalScale(8),
+    paddingVertical: verticalScale(10),
+    paddingHorizontal: scale(16),
   },
 
 });

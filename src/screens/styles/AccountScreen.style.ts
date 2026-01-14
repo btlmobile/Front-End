@@ -18,11 +18,16 @@ export const styles = StyleSheet.create({
   contentBox: {
     width: scale(922),
     height: verticalScale(699),
-    backgroundColor: 'rgba(217, 217, 217, 0.8)',
-    borderRadius: scale(32),
+    backgroundColor: '#FFFFFF',
+    borderRadius: 24,
     justifyContent: 'center',
     alignItems: 'center',
     padding: scale(40),
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 8,
   },
   text: {
     fontSize: fontScale(theme.fontSize.l),

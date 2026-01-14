@@ -5,12 +5,19 @@ import {
   ImageBackground,
   StatusBar,
   Alert,
+  Image,
+  TouchableOpacity,
+  Dimensions,
+  Modal,
+  Pressable,
 } from 'react-native';
 import { Button as PaperButton, IconButton, Menu, Divider } from 'react-native-paper';
+import { LinearGradient } from 'expo-linear-gradient';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { styles } from './styles/HomeScreen.style';
 import { theme } from '../themes/theme';
+import { scale, verticalScale, moderateScale } from '../utils/scaling';
 import AccountIcon from '../../asset/image/account_icon.svg';
 import BaloIcon from '../../asset/image/balo_icon.svg';
 import SettingIcon from '../../asset/image/setting_icon.svg';
@@ -54,7 +61,7 @@ export default function HomeScreen({ route, navigation }: Readonly<Props>) {
 
   const handleAccountPress = () => {
     if (isGuest) {
-      handleGuestAccess();
+      navigation.navigate('Login');
       return;
     }
     navigation.navigate('Account', { theme: currentTheme, isGuest });
@@ -76,65 +83,123 @@ export default function HomeScreen({ route, navigation }: Readonly<Props>) {
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
       <ImageBackground source={home_bg} style={styles.background} resizeMode="cover">
         <View style={styles.overlay}>
+          {/* Left Column: Account + Balo (vertical) */}
           <View style={styles.topLeftIcons}>
-            <IconButton
-              icon={AccountSvgIcon}
-              size={iconSize}
-              onPress={handleAccountPress}
-              testID="home-account-button"
-            />
+            <View style={[styles.iconContainer, { backgroundColor: currentTheme === 'light' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)' }]}>
+              <IconButton
+                icon={AccountSvgIcon}
+                size={iconSize}
+                onPress={handleAccountPress}
+                testID="home-account-button"
+              />
+            </View>
+            <View style={[styles.iconContainer, { backgroundColor: currentTheme === 'light' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)' }]}>
+              <IconButton
+                icon={BaloSvgIcon}
+                size={iconSize}
+                onPress={handleBaloPress}
+                testID="home-balo-button"
+              />
+            </View>
           </View>
-          <View style={styles.topRightIcons}>
-            <IconButton
-              icon={BaloSvgIcon}
-              size={iconSize}
-              onPress={handleBaloPress}
-              testID="home-balo-button"
-            />
-            <Menu
+
+          {/* Right Column: Settings + Chat (vertical) */}
+          <View style={[styles.topRightIcons, { zIndex: 1000 }]}>
+            <View style={[styles.iconContainer, { backgroundColor: currentTheme === 'light' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)' }]}>
+              <Pressable onPress={openMenu} testID="home-settings-button">
+                <SettingSvgIcon size={iconSize} />
+              </Pressable>
+            </View>
+
+            <Modal
               visible={menuVisible}
-              onDismiss={closeMenu}
-              anchor={
-                <IconButton
-                  icon={SettingSvgIcon}
-                  size={iconSize}
-                  onPress={openMenu}
-                  testID="home-settings-button"
-                />
-              }
+              transparent
+              animationType="fade"
+              onRequestClose={closeMenu}
             >
-              <Menu.Item
+              <Pressable
+                style={{ flex: 1 }}
+                onPress={closeMenu}
+              >
+                <Pressable onPress={(e) => e.stopPropagation()}>
+                  <View style={{
+                    position: 'absolute',
+                    top: verticalScale(140),
+                    right: scale(20),
+                    backgroundColor: 'white',
+                    borderRadius: 8,
+                    padding: 8,
+                    minWidth: 200,
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84,
+                    elevation: 5,
+                  }}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        toggleTheme();
+                        closeMenu();
+                      }}
+                      style={{ padding: 12 }}
+                    >
+                      <Text style={{ fontSize: 16 }}>Ngày/Đêm</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.navigate('Introduce', { theme: currentTheme });
+                        closeMenu();
+                      }}
+                      style={{ padding: 12 }}
+                    >
+                      <Text style={{ fontSize: 16 }}>Giới thiệu</Text>
+                    </TouchableOpacity>
+
+                    <View style={{ height: 1, backgroundColor: '#e0e0e0', marginVertical: 4 }} />
+
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.navigate('Support', { theme: currentTheme });
+                        closeMenu();
+                      }}
+                      style={{ padding: 12 }}
+                    >
+                      <Text style={{ fontSize: 16 }}>Hỗ Trợ/Phản hồi</Text>
+                    </TouchableOpacity>
+
+                    {!isGuest && (
+                      <TouchableOpacity
+                        onPress={() => {
+                          navigation.navigate('Login');
+                          closeMenu();
+                        }}
+                        style={{ padding: 12 }}
+                      >
+                        <Text style={{ fontSize: 16 }}>Đăng xuất</Text>
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                </Pressable>
+              </Pressable>
+            </Modal>
+
+            {/* Chat Icon - NEW */}
+            <View style={[styles.iconContainer, { backgroundColor: currentTheme === 'light' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)' }]}>
+              <IconButton
+                icon={() => (
+                  <Image
+                    source={require('../../asset/image/chat_icon.png')}
+                    style={{ width: iconSize, height: iconSize }}
+                  />
+                )}
+                size={iconSize}
                 onPress={() => {
-                  toggleTheme();
-                  closeMenu();
+                  navigation.navigate('Chat', { theme: currentTheme, isGuest });
                 }}
-                title="Ngày/Đêm"
+                testID="home-chat-button"
               />
-              <Menu.Item
-                onPress={() => {
-                  navigation.navigate('Introduce', { theme: currentTheme });
-                  closeMenu();
-                }}
-                title="Giới thiệu"
-              />
-              <Divider />
-              <Menu.Item
-                onPress={() => {
-                  Sentry.showFeedbackWidget();
-                  closeMenu();
-                }}
-                title="Hỗ Trợ/Phản hồi"
-              />
-              {!isGuest && (
-                <Menu.Item
-                  onPress={() => {
-                    navigation.navigate('Login');
-                    closeMenu();
-                  }}
-                  title="Đăng xuất"
-                />
-              )}
-            </Menu>
+            </View>
           </View>
 
           <View style={styles.contentContainer}>
@@ -143,28 +208,42 @@ export default function HomeScreen({ route, navigation }: Readonly<Props>) {
               <Text style={[styles.subtitle, { color: subtitleColor }]}>
                 Viết ra lời tâm sự, thả theo sóng biển
               </Text>
-              <PaperButton
-                mode="contained"
-                onPress={() =>
-                  navigation.navigate('WriteMessage', { theme: currentTheme, isGuest })
-                }
+              <LinearGradient
+                colors={theme.common.buttonGradients.primary as any}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
                 style={styles.primaryButton}
-                labelStyle={styles.buttonLabel}
               >
-                Viết thư
-              </PaperButton>
-              <PaperButton
-                mode="contained"
-                onPress={() => navigation.navigate('Waiting', { theme: currentTheme, isGuest })}
+                <PaperButton
+                  mode="text"
+                  onPress={() =>
+                    navigation.navigate('WriteMessage', { theme: currentTheme, isGuest })
+                  }
+                  style={styles.gradientButtonInner}
+                  labelStyle={styles.buttonLabel}
+                >
+                  Viết thư
+                </PaperButton>
+              </LinearGradient>
+              <LinearGradient
+                colors={theme.common.buttonGradients.secondary as any}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
                 style={styles.secondaryButton}
-                labelStyle={styles.buttonLabel}
               >
-                Dạo biển
-              </PaperButton>
+                <PaperButton
+                  mode="text"
+                  onPress={() => navigation.navigate('Waiting', { theme: currentTheme, isGuest })}
+                  style={styles.gradientButtonInner}
+                  labelStyle={styles.buttonLabel}
+                >
+                  Dạo biển
+                </PaperButton>
+              </LinearGradient>
             </View>
           </View>
         </View>
-      </ImageBackground>
-    </View>
+      </ImageBackground >
+    </View >
   );
 }

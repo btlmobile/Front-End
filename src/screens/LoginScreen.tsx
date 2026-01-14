@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, ImageBackground, StatusBar, Alert } from 'react-native';
 import { TextInput as PaperTextInput, Button as PaperButton } from 'react-native-paper';
-import * as SecureStore from 'expo-secure-store';
+import storage from '../utils/storage';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { styles } from './styles/LoginScreen.style';
@@ -20,7 +20,7 @@ export default function LoginScreen({ navigation }: Readonly<Props>) {
     try {
       const response = await login({ username, password });
       const { token } = response.data;
-      await SecureStore.setItemAsync('token', token);
+      await storage.setItem('token', token);
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       navigation.navigate('Home', { guest: false });
     } catch (error) {

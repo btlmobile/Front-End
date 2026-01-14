@@ -38,3 +38,5 @@ coverage/
 .env.local
 
 .env.local
+# /UI_Figma
+/UI_Figma

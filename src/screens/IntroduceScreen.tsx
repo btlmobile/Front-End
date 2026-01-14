@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, ImageBackground, StatusBar, ScrollView } from 'react-native';
+import { View, Text, ImageBackground, StatusBar } from 'react-native';
 import { Button as PaperButton } from 'react-native-paper';
+import { LinearGradient } from 'expo-linear-gradient';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { styles } from './styles/IntroduceScreen.style';
@@ -10,7 +11,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Introduce'>;
 
 export default function IntroduceScreen({ route, navigation }: Readonly<Props>) {
   const currentTheme = route.params?.theme || 'light';
-  const { home_bg, text } = appTheme[currentTheme];
+  const { home_bg } = appTheme[currentTheme];
 
   return (
     <View style={styles.container}>
@@ -18,30 +19,29 @@ export default function IntroduceScreen({ route, navigation }: Readonly<Props>) 
       <ImageBackground source={home_bg} style={styles.background} resizeMode="cover">
         <View style={styles.overlay}>
           <View style={styles.contentBox}>
-            <ScrollView
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={styles.contentScroll}
-            >
-              <Text style={[styles.text, { color: text }]}>
-                Hãy viết một lá thư về bất cứ điều gì đang chất chứa trong lòng. Đây là không gian
-                an toàn để bạn trải lòng và sẻ chia.
-                {'\n\n'}
-                Khi viết xong, lá thư của bạn sẽ được đặt trong một chiếc chai và thả trôi ra đại
-                dương số. Nó sẽ lênh đênh, mang theo những lời nhắn nhủ của bạn.
-                {'\n\n'}
-                Nghi thức viết rồi thả đi này có thể giúp bạn buông bỏ gánh nặng, lắng dịu cảm xúc,
-                hay đơn giản là được sống thật với chính mình.
-              </Text>
-            </ScrollView>
+            <Text style={styles.text}>
+              Hãy viết một lá thư về bất cứ điều gì đang chật chứa trong lòng. Đây là không gian an toàn để bạn trải lòng và sẻ chia.
+              {'\n\n'}
+              Khi viết xong, lá thư của bạn sẽ được đặt trong một chiếc chai và thả trôi ra đại dương số. Nó sẽ lênh đênh, mang theo những lời nhắn nhủ của bạn.
+              {'\n\n'}
+              Nghi thức viết rồi thả đi này có thể giúp bạn buông bỏ gánh nặng, lắng dịu cảm xúc, hay đơn giản là được sống thật với chính mình.
+            </Text>
           </View>
-          <PaperButton
-            mode="contained"
-            onPress={() => navigation.goBack()}
+          <LinearGradient
+            colors={appTheme.common.buttonGradients.primary as any}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
             style={styles.backButton}
-            labelStyle={styles.buttonText}
           >
-            Trở về biển
-          </PaperButton>
+            <PaperButton
+              mode="text"
+              onPress={() => navigation.goBack()}
+              style={styles.gradientButtonInner}
+              labelStyle={styles.buttonText}
+            >
+              Trở về biển
+            </PaperButton>
+          </LinearGradient>
         </View>
       </ImageBackground>
     </View>

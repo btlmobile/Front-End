@@ -8,6 +8,7 @@ type MessageLayoutProps = {
   children: React.ReactNode;
   buttons: React.ReactNode;
   theme?: 'light' | 'dark';
+  headerRight?: React.ReactNode;
 };
 
 export default function MessageLayout({
@@ -15,6 +16,7 @@ export default function MessageLayout({
   children,
   buttons,
   theme = 'light',
+  headerRight,
 }: Readonly<MessageLayoutProps>) {
   const { read_bg, text } = appTheme[theme];
 
@@ -23,6 +25,7 @@ export default function MessageLayout({
       <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
       <ImageBackground source={read_bg} style={styles.background} resizeMode="cover">
         <View style={styles.overlay}>
+          {headerRight && <View style={styles.headerRight}>{headerRight}</View>}
           <Text style={[styles.title, { color: text }]}>{title}</Text>
           {children}
           <View style={styles.buttonContainer}>{buttons}</View>

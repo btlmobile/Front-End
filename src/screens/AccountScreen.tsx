@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ImageBackground, StatusBar, Alert } from 'react-native';
 import { Button as PaperButton, ActivityIndicator } from 'react-native-paper';
-import * as SecureStore from 'expo-secure-store';
+import { BlurView } from 'expo-blur';
+import storage from '../utils/storage';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { styles } from './styles/AccountScreen.style';
@@ -37,7 +38,7 @@ export default function AccountScreen({ route, navigation }: Readonly<Props>) {
   }, [isGuest]);
 
   const handleLogout = async () => {
-    await SecureStore.deleteItemAsync('token');
+    await storage.deleteItem('token');
     navigation.navigate('Login');
   };
 
@@ -48,7 +49,7 @@ export default function AccountScreen({ route, navigation }: Readonly<Props>) {
   } else if (isGuest) {
     content = (
       <>
-        <Text style={[styles.text, { color: text }]}>
+        <Text style={[styles.text, { color: '#064273' }]}>
           Bạn cần đăng nhập để xem thông tin tài khoản.
         </Text>
         <PaperButton
@@ -64,7 +65,7 @@ export default function AccountScreen({ route, navigation }: Readonly<Props>) {
   } else {
     content = (
       <>
-        <Text style={[styles.text, { color: text }]}>Xin chào, {user?.username}!</Text>
+        <Text style={[styles.text, { color: '#064273' }]}>Xin chào, {user?.username}!</Text>
         <PaperButton
           mode="contained"
           onPress={handleLogout}
@@ -82,9 +83,9 @@ export default function AccountScreen({ route, navigation }: Readonly<Props>) {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
       <ImageBackground source={home_bg} style={styles.background} resizeMode="cover">
-        <View style={styles.overlay}>
+        <BlurView intensity={25} tint="dark" style={styles.overlay}>
           <View style={styles.contentBox}>{content}</View>
-        </View>
+        </BlurView>
       </ImageBackground>
     </View>
   );

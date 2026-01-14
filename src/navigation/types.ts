@@ -10,8 +10,10 @@ export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
   Introduce: { theme: 'light' | 'dark' };
+  Support: { theme: 'light' | 'dark' };
   Account: { theme: 'light' | 'dark'; isGuest?: boolean };
   Balo: { theme: 'light' | 'dark'; isGuest?: boolean };
   StoredBottleDetail: { theme: 'light' | 'dark'; stored_bottle_id: string; isGuest?: boolean };
+  Chat: { theme: 'light' | 'dark'; isGuest?: boolean };
   Test: undefined;
 };

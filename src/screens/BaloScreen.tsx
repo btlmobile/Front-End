@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, ImageBackground, StatusBar, FlatList, Alert } from 'react-native';
 import { IconButton, Button as PaperButton } from 'react-native-paper';
 import { moderateScale } from '../utils/scaling';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useFocusEffect } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/types';
 import { styles } from './styles/BaloScreen.style';
 import { theme as appTheme } from '../themes/theme';
@@ -33,9 +34,11 @@ export default function BaloScreen({ route, navigation }: Readonly<Props>) {
     }
   };
 
-  useEffect(() => {
-    fetchBottles();
-  }, [isGuest]);
+  useFocusEffect(
+    useCallback(() => {
+      fetchBottles();
+    }, [isGuest])
+  );
 
   const handleDelete = async (id: string) => {
     try {
