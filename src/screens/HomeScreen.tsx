@@ -160,7 +160,7 @@ export default function HomeScreen({ route, navigation }: Readonly<Props>) {
 
                     <TouchableOpacity
                       onPress={() => {
-                        navigation.navigate('Support', { theme: currentTheme });
+                        Sentry.showFeedbackWidget();
                         closeMenu();
                       }}
                       style={{ padding: 12 }}

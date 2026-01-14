@@ -19,24 +19,22 @@ import StoredBottleDetailScreen from './src/screens/StoredBottleDetailScreen';
 import ChatScreen from './src/screens/ChatScreen';
 import { RootStackParamList } from './src/navigation/types';
 import { paperTheme } from './src/themes/paperTheme';
-// TEMPORARILY DISABLED: Sentry has compatibility issues with Expo SDK 54
-// TODO: Re-enable when using development build or when Sentry updates for SDK 54
-// import * as Sentry from '@sentry/react-native';
+import * as Sentry from '@sentry/react-native';
 import storage from './src/utils/storage';
 import api from './src/services/api';
 
-// Sentry.init({
-//   dsn: 'https://d9f580b4edd55a922a8d3cbde5e7c7bb@o4510502309134336.ingest.us.sentry.io/4510502314770432',
-//   sendDefaultPii: true,
-//   enableInExpoDevelopment: true,
-//   environment: __DEV__ ? 'development' : 'production',
-//   enableLogs: true,
-//   integrations: [Sentry.feedbackIntegration()],
-// });
+Sentry.init({
+  dsn: 'https://d9f580b4edd55a922a8d3cbde5e7c7bb@o4510502309134336.ingest.us.sentry.io/4510502314770432',
+  sendDefaultPii: true,
+  enableInExpoDevelopment: true,
+  environment: __DEV__ ? 'development' : 'production',
+  enableLogs: true,
+  integrations: [Sentry.feedbackIntegration()],
+});
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-export default function App() {
+function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [initialRoute, setInitialRoute] = useState<'Login' | 'Home'>('Login');
 
@@ -95,3 +93,5 @@ export default function App() {
     </PaperProvider>
   );
 }
+
+export default Sentry.wrap(App);
