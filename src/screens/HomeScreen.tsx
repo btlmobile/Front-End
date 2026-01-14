@@ -76,7 +76,7 @@ export default function HomeScreen({ route, navigation }: Readonly<Props>) {
   };
 
   const { home_bg, titleColor, subtitleColor } = theme[currentTheme];
-  const iconSize = 34;
+  const iconSize = 42;
 
   return (
     <View style={styles.container} testID="home-screen-container">

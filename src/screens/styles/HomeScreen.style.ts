@@ -27,19 +27,17 @@ export const styles = StyleSheet.create({
   },
   topLeftIcons: {
     position: 'absolute',
-    top: verticalScale(50),
+    top: verticalScale(80),
     left: scale(20),
     flexDirection: 'column', // Changed from 'row' to stack vertically
     gap: verticalScale(16), // Spacing between icons
-    marginTop: '20%',
   },
   topRightIcons: {
     position: 'absolute',
-    top: verticalScale(50),
+    top: verticalScale(80),
     right: scale(20),
     flexDirection: 'column', // Changed from 'row' to stack vertically
     gap: verticalScale(16), // Spacing between icons
-    marginTop: '20%',
   },
   title: {
     fontSize: fontScale(40),
@@ -65,9 +63,9 @@ export const styles = StyleSheet.create({
     textShadowRadius: 4,
   },
   iconContainer: {
-    width: moderateScale(56),
-    height: moderateScale(56),
-    borderRadius: moderateScale(14),
+    width: moderateScale(64),
+    height: moderateScale(64),
+    borderRadius: moderateScale(16),
     justifyContent: 'center',
     alignItems: 'center',
     // backgroundColor set inline based on theme
